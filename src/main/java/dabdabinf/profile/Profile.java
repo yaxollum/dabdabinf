@@ -1,0 +1,24 @@
+package dabdabinf.profile;
+
+import java.security.*;
+import dabdabinf.tools.Rsa;
+
+public class Profile
+{
+    public String name;
+    public KeyPair keys;
+    public Profile(){}
+    public Profile(String n,KeyPair k)
+    {
+        name=n;
+        keys=k;
+    }
+    public String sign(String message)
+    {
+        return Rsa.sign(message,keys.getPrivate());
+    }
+    public String toString()
+    {
+        return Rsa.publicToBase64(keys.getPublic());
+    }
+}

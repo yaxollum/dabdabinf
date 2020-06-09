@@ -1,0 +1,42 @@
+package dabdabinf.block;
+
+import java.io.File;
+import dabdabinf.tools.General;
+
+public class Block implements Comparable<Block>
+{
+	public int blockNumber;
+	public String previousBlockHash;
+	public String blockData;
+	public String blockHash;
+	
+	public void print()
+	{
+		System.out.printf("Block Number: %d\n",blockNumber);
+		System.out.print("Previous Block Hash: ");
+		System.out.println(previousBlockHash);
+		System.out.print("Block Data: ");
+		System.out.println(blockData);
+		System.out.print("Block Hash: ");
+		System.out.println(blockHash);
+	}
+	
+	public void export()
+	{
+	    String fileName=String.format("blockchain/block%04d",blockNumber);
+	    General.writeToFile(new File(fileName),blockData);
+	}
+	
+	public void generateHash()
+	{
+		byte[] hashBytes=General.sha256(blockData.getBytes());
+		String hashString="";
+		for(byte b : hashBytes) hashString+=String.format("%02x",b);
+		blockHash=hashString;
+	}
+	
+	public int compareTo(Block other)
+	{
+		return blockNumber-other.blockNumber;
+	}
+} 
