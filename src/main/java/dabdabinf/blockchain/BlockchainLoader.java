@@ -11,6 +11,18 @@ public class BlockchainLoader
 {
     public static List<Block> load()
 	{
+        String userHomeDir=System.getProperty("user.home");
+        File blockchainFolder=new File(userHomeDir+"/.dabdabinf/blockchain");
+        blockchainFolder.mkdirs();
+
+        File blockZeroFile=new File(blockchainFolder,"block0000");
+
+        if(!blockZeroFile.exists())
+        {
+                
+        }
+        /*
+        
 	    List<Block> blocks=new ArrayList<Block>();
 		File blockchainFolder = new File("blockchain");
 		File[] blockFiles = blockchainFolder.listFiles();
@@ -34,5 +46,7 @@ public class BlockchainLoader
 		}
 		
 		return blocks;
+        */
+        return null;
 	}
 }

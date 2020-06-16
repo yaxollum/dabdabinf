@@ -38,22 +38,26 @@ public class Miner
 	    return false;
 	}
 	
-	void mine(String transactionData,Block lastBlock)
+	Block mine(Profile activeProfile,String transactionData,Block lastBlock)
 	{
 	    long startTime=System.nanoTime();
-	    
+
 	    //Block lastBlock=blocks.get(blocks.size()-1);
 	    //lastBlock.blockHash="dabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabd";
-	    byte[] lastHash=lastBlock.blockHash.getBytes();
-	    byte[] transactionBytes=transactionData.getBytes();
-	    byte[] newData=new byte[64+transactionBytes.length+10];
+
+        ByteArrayOutputStream newDataStream=new ByteArrayOutputStream();
+
+        newDataStream.write(lastBlock.blockHash.getBytes());
+        newDataStream.write('*');
+        newDataStream.write(activeProfile.getPublicKey().getBytes());
+        newDataStream.write('!');
+        newDataStream.write(activeProfile.sign(transactionData).getBytes());
+        newDataStream.write(transactionData.getBytes());
+        newDataStream.write(new byte[10]);
+
+	    byte[] newData=newDataStream.toByteArray();
 	    
-	    for(int i=0;i<64;++i) newData[i]=lastHash[i];
-	    for(int i=0;i<transactionBytes.length;++i) newData[i+64]=transactionBytes[i];
-	    
-	    int start=64+transactionBytes.length;
-	    
-	    if(!mineLoop(newData,start))
+	    if(!mineLoop(newData))
 	    {
 	        System.out.println("Unable to mine a new block.");
 	        return;

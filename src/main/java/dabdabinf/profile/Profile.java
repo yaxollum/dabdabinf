@@ -17,7 +17,7 @@ public class Profile
     {
         return Rsa.sign(message,keys.getPrivate());
     }
-    public String toString()
+    public String publicKeyBase64()
     {
         return Rsa.publicToBase64(keys.getPublic());
     }

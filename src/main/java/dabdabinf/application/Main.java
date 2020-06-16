@@ -41,7 +41,7 @@ public class Main
 		{
 		    System.out.printf("%d blocks successfully loaded and verified!\n",blockchain.length());
 		}*/
-		
+/*		
 		ProfileManager profileManager=new RealProfileManager();
 	        ProfileChooser profileChooser=new ProfileChooser();	
 		Profile activeProfile=profileChooser.choose();
@@ -62,5 +62,6 @@ public class Main
 			String cmd=input.nextLine();
 			cp.process(cmd.split(" "));
 		}
+    */
 	}
 }
