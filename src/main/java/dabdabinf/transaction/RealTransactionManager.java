@@ -6,8 +6,9 @@ import dabdabinf.profile.Profile;
 
 public class RealTransactionManager implements TransactionManager
 {
-    private List<Transaction> processedTransactions;
+    private TransactionTable processedTransactions;
     private List<Transaction> unprocessedTransactions;
+    private Profile activeProfile;
     
     public RealTransactionManager()
     {
@@ -24,6 +25,17 @@ public class RealTransactionManager implements TransactionManager
         }
         unprocessedTransactions.add(new Transaction(from,to,amount));
     }
+
+    public void processAll()
+    {
+        for(Transaction ut : unprocessedTransactions)
+        {
+            processedTransactions.add(ut);
+        }
+        unprocessedTransactions.clear();
+    }
+
+    public int 
     /*
     void mine(Blockchain blockchain) // doesn't make sense
     {

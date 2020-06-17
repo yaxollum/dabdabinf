@@ -4,14 +4,17 @@ import dabdabinf.profile.Profile;
 
 public class Transaction
 {
-    Profile to;
-    int amount;
-    Transaction(Profile t,int a)
+    public Profile from,to;
+    public int amount,blockNumber,transactionNumber;
+    Transaction(Profile f,Profile t,int a,int bn,int tn)
     {
+        from=f;
         to=t;
         amount=a;
+        blockNumber=bn;
+        transactionNumber=tn;
     }
-    public String toString()
+    public String getBlockchainFormat()
     {
         return String.format("$%d@%s",amount,to);
     }
