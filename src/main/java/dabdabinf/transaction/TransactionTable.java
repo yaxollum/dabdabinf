@@ -1,5 +1,9 @@
 package dabdabinf.transaction;
 
+import java.util.List;
+import java.util.Map;
+import dabdabinf.profile.Profile;
+
 class TransactionTable
 {
     private Map<Profile,List<Transaction>> sent,received;

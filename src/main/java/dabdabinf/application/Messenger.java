@@ -1,6 +1,8 @@
 package dabdabinf.application;
 
 import dabdabinf.blockchain.Blockchain;
+import dabdabinf.profile.Profile;
+import dabdabinf.transaction.TransactionManager;
 
 public interface Messenger
 {
@@ -13,4 +15,6 @@ public interface Messenger
     void blockOutOfRange();
     void profileNotFound(String name);
     void profileCreated(String name);
+    void printBalance(Profile lookupProfile,TransactionManager tm);
+    void exceptionCaught(Exception e);
 }

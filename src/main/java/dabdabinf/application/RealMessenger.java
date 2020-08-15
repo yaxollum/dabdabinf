@@ -2,6 +2,8 @@ package dabdabinf.application;
 
 import java.io.PrintStream;
 import dabdabinf.blockchain.Blockchain;
+import dabdabinf.profile.Profile;
+import dabdabinf.transaction.TransactionManager;
 
 public class RealMessenger implements Messenger
 {
@@ -44,5 +46,13 @@ public class RealMessenger implements Messenger
     public void profileCreated(String name)
     {
         stdout.println("A new profile named "+name+" has been created!");
+    }
+    public void printBalance(Profile lookupProfile, TransactionManager tm)
+    {
+        stdout.println(tm.getTransactionList(lookupProfile));
+    }
+    public void exceptionCaught(Exception e)
+    {
+        stderr.println(e);
     }
 }

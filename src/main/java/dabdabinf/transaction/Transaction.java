@@ -6,13 +6,13 @@ public class Transaction
 {
     public Profile from,to;
     public int amount,blockNumber,transactionNumber;
-    Transaction(Profile f,Profile t,int a,int bn,int tn)
+    Transaction(Profile f,Profile t,int a,int bn/*,int tn*/)
     {
         from=f;
         to=t;
         amount=a;
         blockNumber=bn;
-        transactionNumber=tn;
+        //transactionNumber=tn;
     }
     public String getBlockchainFormat()
     {

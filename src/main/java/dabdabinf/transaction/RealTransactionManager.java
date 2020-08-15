@@ -3,27 +3,31 @@ package dabdabinf.transaction;
 import java.util.List;
 import java.util.ArrayList;
 import dabdabinf.profile.Profile;
+import dabdabinf.blockchain.Blockchain;
 
 public class RealTransactionManager implements TransactionManager
 {
     private TransactionTable processedTransactions;
     private List<Transaction> unprocessedTransactions;
     private Profile activeProfile;
+    private Blockchain blockchain;
     
-    public RealTransactionManager()
+    public RealTransactionManager(Profile ap,Blockchain b)
     {
-        processedTransactions=new ArrayList<Transaction>();
+        processedTransactions=new TransactionTable();
         unprocessedTransactions=new ArrayList<Transaction>();
+        activeProfile=ap;
+        blockchain=b;
     }
     
-    public void newTransaction(Profile from,Profile to,int amount)
+    public void newTransaction(Profile to,int amount)
     {
         if(amount<=0)
         {
             System.out.println("Transaction amount must be positive!");
             return;
         }
-        unprocessedTransactions.add(new Transaction(from,to,amount));
+        unprocessedTransactions.add(new Transaction(activeProfile,to,amount,blockchain.length()));
     }
 
     public void processAll()
@@ -34,8 +38,12 @@ public class RealTransactionManager implements TransactionManager
         }
         unprocessedTransactions.clear();
     }
+    public TransactionList getTransactionList(Profile lookup)
+    {
+        return null;
+    }
 
-    public int 
+    //public int 
     /*
     void mine(Blockchain blockchain) // doesn't make sense
     {

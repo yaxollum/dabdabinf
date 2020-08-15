@@ -1,10 +1,15 @@
 package dabdabinf.miner;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import dabdabinf.tools.General;
 import dabdabinf.block.Block;
+import dabdabinf.profile.Profile;
+import dabdabinf.application.Messenger;
 
 public class Miner
 {	
+    private Messenger messenger;
 	private boolean mineLoop(byte[] newData,int start)
 	{
 	    for(byte n1='a';n1<='z';++n1)
@@ -38,12 +43,6 @@ public class Miner
 	    return false;
 	}
 	
-	Block mine(Profile activeProfile,String transactionData,Block lastBlock)
-	{
-	    long startTime=System.nanoTime();
-
-	    //Block lastBlock=blocks.get(blocks.size()-1);
-	    //lastBlock.blockHash="dabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabd";
         /*
         Structure of a new block
         ------------------------
@@ -67,25 +66,39 @@ public class Miner
         This is why Alice needs to sign the hash of the previous block. Including that hash guarentees that all signatures are UNIQUE.
         */
 
-        ByteArrayOutputStream newDataStream=new ByteArrayOutputStream();
+	Block mine(Profile activeProfile,String transactionData,Block lastBlock)
+	{
+	    long startTime=System.nanoTime();
 
-        newDataStream.write(lastBlock.blockHash.getBytes());
-        newDataStream.write('*');
-        newDataStream.write(activeProfile.getPublicKey().getBytes());
-        newDataStream.write('!');
-        newDataStream.write(activeProfile.sign(lastBlock.blockHash+transactionData).getBytes());
-        newDataStream.write(transactionData.getBytes());
-        newDataStream.write(new byte[10]);
+	    //Block lastBlock=blocks.get(blocks.size()-1);
+	    //lastBlock.blockHash="dabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabd";
+        ByteArrayOutputStream newDataStream=new ByteArrayOutputStream();
+        try
+        {
+            newDataStream.write(lastBlock.blockHash.getBytes());
+            newDataStream.write('*');
+            newDataStream.write(activeProfile.publicKeyBase64().getBytes());
+            newDataStream.write('!');
+            newDataStream.write(activeProfile.sign(lastBlock.blockHash+transactionData).getBytes());
+            newDataStream.write(transactionData.getBytes());
+            newDataStream.write(new byte[10]);
+        }
+        catch(IOException e)
+        {
+            messenger.exceptionCaught(e);
+        }
 
 	    byte[] newData=newDataStream.toByteArray();
 	    
-	    if(!mineLoop(newData))
+	    if(!mineLoop(newData,newData.length-10))
 	    {
 	        System.out.println("Unable to mine a new block.");
-	        return;
+	        return null;
 	    }
 	    
-	    Block newBlock=new Block();/*
+	    Block newBlock=new Block();
+        return newBlock;
+        /*
 	    newBlock.blockNumber=lastBlock.blockNumber+1;
 	    newBlock.previousBlockHash=lastBlock.blockHash;
 	    newBlock.blockData=new String(newData);
