@@ -59,6 +59,11 @@ public class CommandProcessor
                 if(toProfile!=null) Sender.newTransaction(activeProfile,toProfile,amount);
                 else messenger.profileNotFound(to);
                 break;
+            case "balance":
+               String lookup=args[1];
+               Profile lookupProfile=profileManager.findProfile(lookup);
+               messenger.printBalance(lookupProfile,transactionManager);
+               break;
             default:
                 messenger.cmdNotFound(cmd);
         }

@@ -44,6 +44,28 @@ public class Miner
 
 	    //Block lastBlock=blocks.get(blocks.size()-1);
 	    //lastBlock.blockHash="dabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabd";
+        /*
+        Structure of a new block
+        ------------------------
+        [hash of previous block]*[public key of miner]![signature of miner][transaction data][10-letter  m a g i c  w o r d]
+
+        What gets signed by the miner
+        -----------------------------
+        [hash of previous block][transaction data]
+
+        The reason why the hash of the previous block is included is so that signatures cannot be maliciously reused.
+        For example, if Alice sends Bob 500 dabdabinf and she sends Carl 30 dabdabinf, the transaction data should look like this:
+        $500@[Bob's public key]$30@[Carl's public key]
+
+        Let's suppose that Alice does not sign the hash of the previous block but instead only signs the transaction data shown above.
+        Alice then mines a new block (Block 123 in the blockchain) containing the information listed in the section "Structure of a new block".
+
+        Now, if Bob were a malicious user, and he wanted to steal more of Alice's money, he could mine a new block (Block 124) with the following structure:
+        [hash of Block 123]*[Alice's public key]![Alice's signature from Block 123][transaction data from Block 123][a new 10-letter magic word computed by Bob]
+        When Bob publishes the new Block 124, others will verify it as completely valid. Alice's signature is valid (it matches her public key and the transaction data). Others will have no way of knowing whether this block was mined by a malicious user, or by Alice, who just wanted to send 500 more dabdabinf to Bob and 30 more dabdabinf to Carl.
+
+        This is why Alice needs to sign the hash of the previous block. Including that hash guarentees that all signatures are UNIQUE.
+        */
 
         ByteArrayOutputStream newDataStream=new ByteArrayOutputStream();
 
@@ -51,7 +73,7 @@ public class Miner
         newDataStream.write('*');
         newDataStream.write(activeProfile.getPublicKey().getBytes());
         newDataStream.write('!');
-        newDataStream.write(activeProfile.sign(transactionData).getBytes());
+        newDataStream.write(activeProfile.sign(lastBlock.blockHash+transactionData).getBytes());
         newDataStream.write(transactionData.getBytes());
         newDataStream.write(new byte[10]);
 
