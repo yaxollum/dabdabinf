@@ -7,5 +7,5 @@ import dabdabinf.profile.Profile;
 public interface TransactionManager
 {
     void newTransaction(Profile to,int amount);
-    TransactionList getTransactionList(Profile lookup);
+    TransactionReport getTransactionReport(Profile lookup);
 }

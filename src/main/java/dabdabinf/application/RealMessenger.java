@@ -47,9 +47,9 @@ public class RealMessenger implements Messenger
     {
         stdout.println("A new profile named "+name+" has been created!");
     }
-    public void printBalance(Profile lookupProfile, TransactionManager tm)
+    public void printTransactionReport(Profile lookupProfile, TransactionManager tm)
     {
-        stdout.println(tm.getTransactionList(lookupProfile));
+        stdout.println(tm.getTransactionReport(lookupProfile));
     }
     public void exceptionCaught(Exception e)
     {

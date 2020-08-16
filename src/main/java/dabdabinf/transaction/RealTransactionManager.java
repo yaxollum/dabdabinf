@@ -38,9 +38,10 @@ public class RealTransactionManager implements TransactionManager
         }
         unprocessedTransactions.clear();
     }
-    public TransactionList getTransactionList(Profile lookup)
+    public TransactionReport getTransactionReport(Profile lookup)
     {
-        return null;
+        return new TransactionReport(processedTransactions.sentTransactions(lookup),
+            processedTransactions.receivedTransactions(lookup));
     }
 
     //public int 

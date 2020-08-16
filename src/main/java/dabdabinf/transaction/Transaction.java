@@ -18,4 +18,12 @@ public class Transaction
     {
         return String.format("$%d@%s",amount,to);
     }
+    public String getReportFormat()
+    {
+        return String.format("block #%d: %s --> %d dabdabinf --> %s\n",
+            blockNumber,
+            from.toString(),
+            amount,
+            to.toString());
+    }
 }

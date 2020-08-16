@@ -62,7 +62,7 @@ public class CommandProcessor
             case "balance":
                String lookup=args[1];
                Profile lookupProfile=profileManager.findProfile(lookup);
-               messenger.printBalance(lookupProfile,transactionManager);
+               messenger.printTransactionReport(lookupProfile,transactionManager);
                break;
             default:
                 messenger.cmdNotFound(cmd);

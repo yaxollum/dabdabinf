@@ -15,6 +15,6 @@ public interface Messenger
     void blockOutOfRange();
     void profileNotFound(String name);
     void profileCreated(String name);
-    void printBalance(Profile lookupProfile,TransactionManager tm);
+    void printTransactionReport(Profile lookupProfile,TransactionManager tm);
     void exceptionCaught(Exception e);
 }
