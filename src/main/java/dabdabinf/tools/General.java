@@ -39,6 +39,13 @@ public class General
 		
 		return null;
 	}
+
+    public static String readEntireResource(String path)
+    {
+        Scanner resourceScanner=new Scanner(General.class.getResourceAsStream(path));
+        resourceScanner.useDelimiter("\\Z");
+        return resourceScanner.next();
+    }
 	
 	public static void writeToFile(File ff,String s)
 	{
