@@ -59,7 +59,7 @@ public class General
 	        System.out.println(e);
 	        System.exit(1);
 	    }
-	    printWriter.print(s);
+	    printWriter.println(s);
 	    printWriter.close();
 	}
 	

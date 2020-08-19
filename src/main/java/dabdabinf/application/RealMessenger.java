@@ -9,7 +9,12 @@ public class RealMessenger implements Messenger
 {
     private PrintStream stdout;
     private PrintStream stderr;
-    
+
+    public RealMessenger(PrintStream output,PrintStream error)
+    {
+        stdout=output;
+        stderr=error;
+    }
     public void help()
     {
         stdout.println("(Help tips here)");

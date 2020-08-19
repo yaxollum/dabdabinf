@@ -35,6 +35,7 @@ public class Miner
 	        newData[start+9]=n10;
 	        
 	        byte[] newHash=General.sha256(newData);
+            // 0xda = -38, 0xbd = -67, 0xab = -85
 	        if(newHash[0]==-38&&newHash[1]==-67&&newHash[2]==-85)
 	        {
 	            return true;

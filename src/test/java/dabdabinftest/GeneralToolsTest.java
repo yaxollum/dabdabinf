@@ -18,6 +18,6 @@ public class GeneralToolsTest
     public void shouldReadEntireResource()
     {
         Assert.assertEquals("This is an example resource.\nSecond line!",
-            General.readEntireResource("/example"));
+            General.readEntireResource("/example_resource"));
     }
 }
