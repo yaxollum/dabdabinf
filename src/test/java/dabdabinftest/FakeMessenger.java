@@ -55,4 +55,5 @@ public class FakeMessenger implements Messenger
     }
     public void exceptionCaught(Exception e) {}
     public void printTransactionReport(Profile lp, TransactionManager tm) {}
+    public void prompt(Profile activeProfile) {}
 }

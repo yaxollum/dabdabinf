@@ -8,6 +8,7 @@ import dabdabinf.profile.Profile;
 import dabdabinf.transaction.TransactionManager;
 import dabdabinf.application.Messenger;
 import dabdabinf.application.CommandProcessor;
+import dabdabinf.miner.Miner;
 
 public class CommandProcessorTest
 {
@@ -19,8 +20,9 @@ public class CommandProcessorTest
         Profile profile=new Profile();
         TransactionManager ftm=new FakeTransactionManager();
         FakeMessenger fm=new FakeMessenger();
+        Miner miner=new Miner(fm);
         
-        CommandProcessor cp=new CommandProcessor(fb,fpm,profile,ftm,fm);
+        CommandProcessor cp=new CommandProcessor(fb,fpm,profile,ftm,fm,miner);
         
         String[] test1={"help","exit"};
         cp.process(test1);

@@ -17,4 +17,5 @@ public interface Messenger
     void profileCreated(String name);
     void printTransactionReport(Profile lookupProfile,TransactionManager tm);
     void exceptionCaught(Exception e);
+    void prompt(Profile activeProfile);
 }

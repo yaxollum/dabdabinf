@@ -17,4 +17,9 @@ public class FakeTransactionManager implements TransactionManager
     {
         return null;
     }
+    public void processAll() {}
+    public String getTransactionData()
+    {
+        return "";
+    }
 }

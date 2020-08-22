@@ -9,12 +9,9 @@ public class RealProfileManager implements ProfileManager
 {
     private List<Profile> profiles;
     
-    public RealProfileManager()
+    public RealProfileManager(List<Profile> lp)
     {
-        profiles=new ArrayList<Profile>();
-        
-        
-		
+        profiles=lp;
     }
     
     public void addProfile(Profile p)
@@ -26,9 +23,9 @@ public class RealProfileManager implements ProfileManager
     }
     public Profile findProfile(String name)
     {
-        for(int i=0;i<profiles.size();++i)
+        for(Profile p : profiles)
         {
-            if(name.equals(profiles.get(i).name)) return profiles.get(i);
+            if(name.equals(p.name)) return p;
         }
         return null;
     }

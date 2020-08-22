@@ -1,12 +1,14 @@
 package dabdabinf.application;
 
 import java.util.Scanner;
+import java.util.List;
 import java.io.File;
 import dabdabinf.blockchain.Blockchain;
 import dabdabinf.blockchain.RealBlockchain;
 import dabdabinf.blockchain.BlockchainLoader;
 import dabdabinf.profile.*;
 import dabdabinf.transaction.*;
+import dabdabinf.miner.Miner;
 
 public class Main
 {
@@ -36,32 +38,33 @@ public class Main
 		//System.out.println(welcomeMessage);
 		input=new Scanner(System.in);
 		Blockchain blockchain=new RealBlockchain(BlockchainLoader.load());
-		//blockchain.load();
 		/*if(blockchain.verify())
 		{
 		    System.out.printf("%d blocks successfully loaded and verified!\n",blockchain.length());
 		}*/
-/*		
-		ProfileManager profileManager=new RealProfileManager();
-	        ProfileChooser profileChooser=new ProfileChooser();	
-		Profile activeProfile=profileChooser.choose();
+
+		ProfileManager profileManager=new RealProfileManager(ProfileLoader.load());
+        Profile activeProfile=profileManager.findProfile("example");
 		
-		TransactionManager transactionManager=new RealTransactionManager();
+		TransactionManager transactionManager=new RealTransactionManager(activeProfile,blockchain);
 		
-		Messenger messenger=new RealMessenger();
+		Messenger messenger=new RealMessenger(System.out);
+
+        Miner miner=new Miner(messenger);
 		
 		CommandProcessor cp=new CommandProcessor(blockchain,
 		    profileManager,
 		    activeProfile,
 		    transactionManager,
-		    messenger);
+		    messenger,
+            miner);
 		
 		while(true)
 		{
-			System.out.print("> ");
+            messenger.prompt(activeProfile);
+            if(!input.hasNextLine()) break;
 			String cmd=input.nextLine();
 			cp.process(cmd.split(" "));
 		}
-    */
 	}
 }

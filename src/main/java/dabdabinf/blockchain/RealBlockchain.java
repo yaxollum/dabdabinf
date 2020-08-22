@@ -29,10 +29,9 @@ public class RealBlockchain implements Blockchain
 	public String toString()
 	{
 	    String res="";
-		Iterator<Block> itr=blocks.iterator();
-		while(itr.hasNext())
+		for(Block b : blocks)
 		{
-			res+=itr.next().toString();
+			res+=b.toString();
 			res+='\n';
 		}
 		return res;
@@ -42,6 +41,11 @@ public class RealBlockchain implements Blockchain
 	{
 	    return blocks.size();
 	}
+
+    public Block getBlock(int i)
+    {
+        return blocks.get(i);
+    }
 	
 	public RealBlockchain(List<Block> b)
 	{

@@ -10,6 +10,10 @@ import dabdabinf.application.Messenger;
 public class Miner
 {	
     private Messenger messenger;
+    public Miner(Messenger m)
+    {
+        messenger=m;
+    }
 	private boolean mineLoop(byte[] newData,int start)
 	{
 	    for(byte n1='a';n1<='z';++n1)
@@ -67,7 +71,7 @@ public class Miner
         This is why Alice needs to sign the hash of the previous block. Including that hash guarentees that all signatures are UNIQUE.
         */
 
-	Block mine(Profile activeProfile,String transactionData,Block lastBlock)
+	public Block mine(Profile activeProfile,String transactionData,Block lastBlock)
 	{
 	    long startTime=System.nanoTime();
 

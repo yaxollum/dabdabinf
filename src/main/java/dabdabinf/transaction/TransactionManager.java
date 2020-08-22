@@ -8,4 +8,6 @@ public interface TransactionManager
 {
     void newTransaction(Profile to,int amount);
     TransactionReport getTransactionReport(Profile lookup);
+    String getTransactionData();
+    void processAll();
 }

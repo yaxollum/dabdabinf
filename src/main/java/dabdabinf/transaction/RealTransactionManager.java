@@ -44,19 +44,14 @@ public class RealTransactionManager implements TransactionManager
             processedTransactions.receivedTransactions(lookup));
     }
 
-    //public int 
-    /*
-    void mine(Blockchain blockchain) // doesn't make sense
+    public String getTransactionData()
     {
-        //process transactions
         String transactionData="";
         
-        for(int i=0;i<unprocessedTransactions.size();++i)
+        for(Transaction t : unprocessedTransactions)
         {   
-            transactionData+=unprocessedTransactions.get(i).toString();
+            transactionData+=t.toString();
         }
-        blockchain.mine(transactionData);
-        processedTransactions.addAll(unprocessedTransactions);
-        unprocessedTransactions.clear();
-    }*/
+        return transactionData;
+    }
 }

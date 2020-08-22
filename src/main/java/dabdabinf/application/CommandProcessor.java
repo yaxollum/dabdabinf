@@ -3,6 +3,7 @@ package dabdabinf.application;
 import dabdabinf.blockchain.Blockchain;
 import dabdabinf.profile.*;
 import dabdabinf.transaction.*;
+import dabdabinf.miner.Miner;
 
 public class CommandProcessor
 {
@@ -11,18 +12,21 @@ public class CommandProcessor
     private Profile activeProfile;
     private TransactionManager transactionManager;
     private Messenger messenger;
+    private Miner miner;
     
     public CommandProcessor(Blockchain bc,
         ProfileManager pm,
         Profile ap,
         TransactionManager tm,
-        Messenger m)
+        Messenger _messenger,
+        Miner _miner)
     {
         blockchain=bc;
         profileManager=pm;
         activeProfile=ap;
         transactionManager=tm;
-        messenger=m;
+        messenger=_messenger;
+        miner=_miner;
     }
     
     public void process(String[] args)
@@ -50,13 +54,15 @@ public class CommandProcessor
                 }
                 break;
             case "mine":
-                //transactionManager.mine(blockchain);
+                String transactionData=transactionManager.getTransactionData();
+                miner.mine(activeProfile,transactionData,blockchain.getBlock(blockchain.length()-1));
+                transactionManager.processAll();
                 break;
             case "send":
                 String to=args[1];
                 int amount=Integer.parseInt(args[2]);
                 Profile toProfile=profileManager.findProfile(to);
-                if(toProfile!=null) Sender.newTransaction(activeProfile,toProfile,amount);
+                if(toProfile!=null) transactionManager.newTransaction(toProfile,amount);
                 else messenger.profileNotFound(to);
                 break;
             case "balance":

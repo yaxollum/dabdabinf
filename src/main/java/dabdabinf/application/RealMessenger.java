@@ -8,12 +8,10 @@ import dabdabinf.transaction.TransactionManager;
 public class RealMessenger implements Messenger
 {
     private PrintStream stdout;
-    private PrintStream stderr;
 
-    public RealMessenger(PrintStream output,PrintStream error)
+    public RealMessenger(PrintStream output)
     {
         stdout=output;
-        stderr=error;
     }
     public void help()
     {
@@ -34,19 +32,19 @@ public class RealMessenger implements Messenger
     }
     public void cmdNotFound(String cmd)
     {
-        stderr.println("Command \""+cmd+"\" not found!");
+        stdout.println("Command \""+cmd+"\" not found!");
     }
     public void blockOutOfRange()
     {
-        stderr.println("Block out of range!");
+        stdout.println("Block out of range!");
     }
     public void expectedNumber()
     {
-        stderr.println("Expected a number!");
+        stdout.println("Expected a number!");
     }
     public void profileNotFound(String name)
     {
-        stderr.println("Profile "+name+" not found!");
+        stdout.println("Profile "+name+" not found!");
     }
     public void profileCreated(String name)
     {
@@ -58,6 +56,12 @@ public class RealMessenger implements Messenger
     }
     public void exceptionCaught(Exception e)
     {
-        stderr.println(e);
+        stdout.println(e);
+    }
+    public void prompt(Profile activeProfile)
+    {
+        stdout.printf("%s@dabdabinf %c ",
+            activeProfile.name,
+            (activeProfile.keys.getPrivate()==null)?'$':'#');
     }
 }

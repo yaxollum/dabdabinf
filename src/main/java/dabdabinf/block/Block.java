@@ -10,15 +10,13 @@ public class Block implements Comparable<Block>
 	public String blockData;
 	public String blockHash;
 	
-	public void print()
+	public String toString()
 	{
-		System.out.printf("Block Number: %d\n",blockNumber);
-		System.out.print("Previous Block Hash: ");
-		System.out.println(previousBlockHash);
-		System.out.print("Block Data: ");
-		System.out.println(blockData);
-		System.out.print("Block Hash: ");
-		System.out.println(blockHash);
+        return String.format("Block Number: %d\nPrevious Block Hash: %s\nBlock Data: %s\nBlock Hash: %s\n",
+        blockNumber,
+        previousBlockHash,
+        blockData,
+        blockHash);
 	}
 	
 	public void export()

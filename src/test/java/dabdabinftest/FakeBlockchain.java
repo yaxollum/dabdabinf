@@ -3,6 +3,7 @@ package dabdabinftest;
 import org.junit.Assert;
 import org.junit.Test;
 import dabdabinf.blockchain.Blockchain;
+import dabdabinf.block.Block;
 
 public class FakeBlockchain implements Blockchain
 {
@@ -23,6 +24,10 @@ public class FakeBlockchain implements Blockchain
     {
         ++lengthCalled;
         return -1;
+    }
+    public Block getBlock(int i)
+    {
+        return null;
     }
 }
 

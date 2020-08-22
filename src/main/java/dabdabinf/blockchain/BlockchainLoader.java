@@ -19,12 +19,10 @@ public class BlockchainLoader
 
         if(!blockZeroFile.exists())
         {
-                
+            General.writeToFile(blockZeroFile,General.readEntireResource("/block0000"));
         }
-        /*
         
 	    List<Block> blocks=new ArrayList<Block>();
-		File blockchainFolder = new File("blockchain");
 		File[] blockFiles = blockchainFolder.listFiles();
 		for(File blockFile : blockFiles)
 		{
@@ -46,7 +44,5 @@ public class BlockchainLoader
 		}
 		
 		return blocks;
-        */
-        return null;
 	}
 }
