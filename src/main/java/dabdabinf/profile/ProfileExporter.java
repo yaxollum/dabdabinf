@@ -8,18 +8,23 @@ import dabdabinf.application.Messenger;
 
 public class ProfileExporter
 {
-    public static void export(Profile newProfile,Messenger messenger)
+    private Messenger messenger;
+    public void export(Profile newProfile)
     {
-        String profilePath="profiles/"+newProfile.name;
+        String userHomeDir=System.getProperty("user.home");
+        File profileBigFolder = new File(userHomeDir+"/.dabdabinf/profiles");
+        File profileDir=new File(profileBigFolder,newProfile.name);
+        profileDir.mkdirs();
         
-        File profileDir=new File(profilePath);
-        profileDir.mkdir();
-        
-        File publicFile=new File(profilePath+"/public");
-        File privateFile=new File(profilePath+"/private");
+        File publicFile=new File(profileDir,"public");
+        File privateFile=new File(profileDir,"private");
         
         Rsa.exportKeyPair(publicFile,privateFile,newProfile.keys);
         
         messenger.profileCreated(newProfile.name); 
+    }
+    public ProfileExporter(Messenger m)
+    {
+        messenger=m;
     }
 }

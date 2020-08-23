@@ -3,6 +3,7 @@ package dabdabinftest;
 import dabdabinf.application.Messenger;
 import dabdabinf.blockchain.Blockchain;
 import dabdabinf.profile.Profile;
+import dabdabinf.profile.ProfileManager;
 import dabdabinf.transaction.TransactionManager;
 
 public class FakeMessenger implements Messenger
@@ -56,4 +57,7 @@ public class FakeMessenger implements Messenger
     public void exceptionCaught(Exception e) {}
     public void printTransactionReport(Profile lp, TransactionManager tm) {}
     public void prompt(Profile activeProfile) {}
+    public void noPrivateKey(Profile p) {}
+    public void listProfiles(ProfileManager pm) {}
+    public void profileExists(String name) {}
 }

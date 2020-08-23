@@ -30,11 +30,13 @@ public class RealProfileManager implements ProfileManager
         return null;
     }
 
-    public void listProfiles()
+    public String getProfileList()
     {
-        for(int i=0;i<profiles.size();++i)
+        String profilesString="";
+        for(Profile p : profiles)
         {
-            System.out.println(profiles.get(i).name);
+            profilesString+=p.name+'\n';
         }
+        return profilesString;
     }
 }

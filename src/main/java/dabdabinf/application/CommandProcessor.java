@@ -10,6 +10,7 @@ public class CommandProcessor
     private Blockchain blockchain;
     private ProfileManager profileManager;
     private Profile activeProfile;
+    private ProfileExporter profileExporter;
     private TransactionManager transactionManager;
     private Messenger messenger;
     private Miner miner;
@@ -17,6 +18,7 @@ public class CommandProcessor
     public CommandProcessor(Blockchain bc,
         ProfileManager pm,
         Profile ap,
+        ProfileExporter pe,
         TransactionManager tm,
         Messenger _messenger,
         Miner _miner)
@@ -24,6 +26,7 @@ public class CommandProcessor
         blockchain=bc;
         profileManager=pm;
         activeProfile=ap;
+        profileExporter=pe;
         transactionManager=tm;
         messenger=_messenger;
         miner=_miner;
@@ -31,9 +34,12 @@ public class CommandProcessor
     
     public void process(String[] args)
     {
+        if(args.length==0) return;
         String cmd=args[0];
         switch(cmd)
         {
+            case "":
+                break; // ignore empty command
             case "help":
                 messenger.help();
                 break;
@@ -70,6 +76,33 @@ public class CommandProcessor
                Profile lookupProfile=profileManager.findProfile(lookup);
                messenger.printTransactionReport(lookupProfile,transactionManager);
                break;
+            case "switch": // change active profile
+                String switchProfileName=args[1];
+                Profile switchProfile=profileManager.findProfile(switchProfileName);
+                if(switchProfile!=null)
+                {
+                    activeProfile.replaceWith(switchProfile);
+                }
+                else
+                {
+                    messenger.profileNotFound(switchProfileName);
+                }
+                break;
+            case "profiles": // list all profiles
+                messenger.listProfiles(profileManager);
+                break;
+            case "generate": // generate a new profile
+                String newProfileName=args[1];
+                if(profileManager.findProfile(newProfileName)==null)
+                {
+                    Profile newProfile=ProfileGenerator.generate(newProfileName);
+                    profileExporter.export(newProfile);
+                }
+                else
+                {
+                    messenger.profileExists(newProfileName);
+                }
+                break;
             default:
                 messenger.cmdNotFound(cmd);
         }

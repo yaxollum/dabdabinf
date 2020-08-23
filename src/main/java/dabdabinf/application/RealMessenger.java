@@ -3,6 +3,7 @@ package dabdabinf.application;
 import java.io.PrintStream;
 import dabdabinf.blockchain.Blockchain;
 import dabdabinf.profile.Profile;
+import dabdabinf.profile.ProfileManager;
 import dabdabinf.transaction.TransactionManager;
 
 public class RealMessenger implements Messenger
@@ -62,6 +63,18 @@ public class RealMessenger implements Messenger
     {
         stdout.printf("%s@dabdabinf %c ",
             activeProfile.name,
-            (activeProfile.keys.getPrivate()==null)?'$':'#');
+            activeProfile.hasPrivateKey()?'#':'$');
+    }
+    public void noPrivateKey(Profile p)
+    {
+        stdout.printf("No private key found for profile \"%s\"!\n",p.name);
+    }
+    public void listProfiles(ProfileManager pm)
+    {
+        stdout.print(pm.getProfileList());
+    }
+    public void profileExists(String name)
+    {
+        stdout.printf("Profile \"%s\" already exists!\n",name);
     }
 }

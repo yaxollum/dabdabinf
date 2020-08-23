@@ -73,6 +73,12 @@ public class Miner
 
 	public Block mine(Profile activeProfile,String transactionData,Block lastBlock)
 	{
+        if(!activeProfile.hasPrivateKey())
+        {
+            messenger.noPrivateKey(activeProfile);
+            return null;
+        }
+
 	    long startTime=System.nanoTime();
 
 	    //Block lastBlock=blocks.get(blocks.size()-1);

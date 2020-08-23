@@ -51,10 +51,13 @@ public class Main
 		Messenger messenger=new RealMessenger(System.out);
 
         Miner miner=new Miner(messenger);
+
+        ProfileExporter profileExporter=new ProfileExporter(messenger);
 		
 		CommandProcessor cp=new CommandProcessor(blockchain,
 		    profileManager,
 		    activeProfile,
+            profileExporter,
 		    transactionManager,
 		    messenger,
             miner);

@@ -21,4 +21,13 @@ public class Profile
     {
         return Rsa.publicToBase64(keys.getPublic());
     }
+    public boolean hasPrivateKey()
+    {
+        return keys.getPrivate()!=null;
+    }
+    public void replaceWith(Profile other)
+    {
+        name=other.name;
+        keys=other.keys;
+    }
 }

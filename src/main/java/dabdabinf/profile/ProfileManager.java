@@ -7,7 +7,7 @@ import java.security.*;
 
 public interface ProfileManager
 {
-    public void listProfiles();
+    public String getProfileList();
     public void addProfile(Profile p);
     public Profile findProfile(String name);
 }

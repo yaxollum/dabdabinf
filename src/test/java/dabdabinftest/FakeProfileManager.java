@@ -26,4 +26,8 @@ public class FakeProfileManager implements ProfileManager
     {
         ++addProfileCalled;
     }
+    public String getProfileList() 
+    {
+        return null;
+    }
 }
