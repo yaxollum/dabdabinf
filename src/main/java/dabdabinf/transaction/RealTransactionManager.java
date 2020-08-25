@@ -54,4 +54,19 @@ public class RealTransactionManager implements TransactionManager
         }
         return transactionData;
     }
+
+    public String getUnprocessed()
+    {
+        String unprocessedReport="";
+        for(Transaction t : unprocessedTransactions)
+        {
+            unprocessedReport+=String.format("Send %d dabdabinf to address %s\n",t.amount,t.to.publicKeyBase64());
+        }
+        return unprocessedReport;
+    }
+
+    public void discardUnprocessed()
+    {
+        unprocessedTransactions.clear();
+    }
 }

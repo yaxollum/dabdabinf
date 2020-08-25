@@ -44,7 +44,7 @@ public class RealMessenger implements Messenger
     }
     public void profileNotFound(String name)
     {
-        stdout.println("Profile "+name+" not found!");
+        stdout.printf("Profile \"%s\" not found!\n",name);
     }
     public void profileCreated(String name)
     {
@@ -95,5 +95,9 @@ public class RealMessenger implements Messenger
     public void notEnoughArguments()
     {
         stdout.println("Not enough arguments.");
+    }
+    public void listUnprocessed(TransactionManager tm)
+    {
+        stdout.print(tm.getUnprocessed());
     }
 }

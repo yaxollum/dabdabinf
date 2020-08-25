@@ -65,4 +65,5 @@ public class FakeMessenger implements Messenger
     public void currentlyMining() {}
     public void blockExported() {}
     public void notEnoughArguments() {}
+    public void listUnprocessed(TransactionManager tm) {}
 }

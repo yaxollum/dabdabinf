@@ -10,4 +10,6 @@ public interface TransactionManager
     TransactionReport getTransactionReport(Profile lookup);
     String getTransactionData();
     void processAll();
+    String getUnprocessed();
+    void discardUnprocessed();
 }

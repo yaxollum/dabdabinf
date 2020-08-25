@@ -27,4 +27,5 @@ public interface Messenger
     void currentlyMining();
     void blockExported();
     void notEnoughArguments();
+    void listUnprocessed(TransactionManager tm);
 }

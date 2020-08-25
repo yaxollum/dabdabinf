@@ -22,4 +22,9 @@ public class FakeTransactionManager implements TransactionManager
     {
         return "";
     }
+    public void discardUnprocessed() {}
+    public String getUnprocessed()
+    {
+        return "";
+    }
 }

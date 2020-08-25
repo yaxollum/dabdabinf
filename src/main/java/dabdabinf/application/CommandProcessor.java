@@ -72,6 +72,9 @@ public class CommandProcessor
                 case "generate": // generate a new profile
                     generateCmd(cmd);
                     break;
+                case "unprocessed": // list unprocessed transactions
+                    messenger.listUnprocessed(transactionManager);
+                    break;
                 default:
                     messenger.cmdNotFound(cmdName);
             }
@@ -132,6 +135,8 @@ public class CommandProcessor
         if(switchProfile!=null)
         {
             activeProfile.replaceWith(switchProfile);
+            transactionManager.discardUnprocessed(); 
+            // discard unprocessed transactions from old active profile
         }
         else
         {
