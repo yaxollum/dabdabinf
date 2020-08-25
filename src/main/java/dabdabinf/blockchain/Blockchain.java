@@ -14,4 +14,5 @@ public interface Blockchain
 	public String toString();
 	public int length();
     public Block getBlock(int i);
+    public void addBlock(Block b);
 }

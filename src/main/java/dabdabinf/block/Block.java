@@ -19,12 +19,6 @@ public class Block implements Comparable<Block>
         blockHash);
 	}
 	
-	public void export()
-	{
-	    String fileName=String.format("blockchain/block%04d",blockNumber);
-	    General.writeToFile(new File(fileName),blockData);
-	}
-	
 	public void generateHash()
 	{
 		byte[] hashBytes=General.sha256(blockData.getBytes());

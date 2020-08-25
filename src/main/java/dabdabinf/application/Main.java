@@ -67,7 +67,7 @@ public class Main
             messenger.prompt(activeProfile);
             if(!input.hasNextLine()) break;
 			String cmd=input.nextLine();
-			cp.process(cmd.split(" "));
+			cp.process(new Command(cmd));
 		}
 	}
 }

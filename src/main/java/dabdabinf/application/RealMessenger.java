@@ -21,7 +21,6 @@ public class RealMessenger implements Messenger
     public void exit()
     {
         stdout.println("See you next time ...");
-        System.exit(0);
     }
     public void printBlock(Blockchain blockchain,int i)
     {
@@ -76,5 +75,25 @@ public class RealMessenger implements Messenger
     public void profileExists(String name)
     {
         stdout.printf("Profile \"%s\" already exists!\n",name);
+    }
+    public void failedToMine()
+    {
+        stdout.println("Failed to mine a new block.");
+    }
+    public void successfullyMined(double timeInSeconds)
+    {
+        stdout.printf("Mined a new block in %f seconds!\n", timeInSeconds);
+    }
+    public void currentlyMining()
+    {
+        stdout.println("Working hard to mine a new block ...");
+    }
+    public void blockExported()
+    {
+        stdout.println("Exported the new block to a file!");
+    }
+    public void notEnoughArguments()
+    {
+        stdout.println("Not enough arguments.");
     }
 }

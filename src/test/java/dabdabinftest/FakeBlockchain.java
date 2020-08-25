@@ -29,5 +29,6 @@ public class FakeBlockchain implements Blockchain
     {
         return null;
     }
+    public void addBlock(Block b) {}
 }
 

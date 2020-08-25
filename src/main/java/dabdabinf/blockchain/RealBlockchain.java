@@ -46,6 +46,11 @@ public class RealBlockchain implements Blockchain
     {
         return blocks.get(i);
     }
+
+    public void addBlock(Block b)
+    {
+        blocks.add(b);
+    }
 	
 	public RealBlockchain(List<Block> b)
 	{

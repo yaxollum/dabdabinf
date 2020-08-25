@@ -1,6 +1,7 @@
 package dabdabinf.application;
 
 import dabdabinf.blockchain.Blockchain;
+import dabdabinf.block.*;
 import dabdabinf.profile.*;
 import dabdabinf.transaction.*;
 import dabdabinf.miner.Miner;
@@ -32,79 +33,123 @@ public class CommandProcessor
         miner=_miner;
     }
     
-    public void process(String[] args)
+    public void process(Command cmd)
     {
-        if(args.length==0) return;
-        String cmd=args[0];
-        switch(cmd)
+        String cmdName=cmd.getName();
+        try
         {
-            case "":
-                break; // ignore empty command
-            case "help":
-                messenger.help();
-                break;
-            case "exit":
-                messenger.exit();
-            case "blocks":
-                messenger.printBlocks(blockchain);
-                break;
-            case "block":
-                try
-                {
-                    int i=Integer.parseInt(args[1]);
-                    messenger.printBlock(blockchain,i);
-                }
-                catch(NumberFormatException e)
-                {
-                    messenger.expectedNumber();
-                }
-                break;
-            case "mine":
-                String transactionData=transactionManager.getTransactionData();
-                miner.mine(activeProfile,transactionData,blockchain.getBlock(blockchain.length()-1));
-                transactionManager.processAll();
-                break;
-            case "send":
-                String to=args[1];
-                int amount=Integer.parseInt(args[2]);
-                Profile toProfile=profileManager.findProfile(to);
-                if(toProfile!=null) transactionManager.newTransaction(toProfile,amount);
-                else messenger.profileNotFound(to);
-                break;
-            case "balance":
-               String lookup=args[1];
-               Profile lookupProfile=profileManager.findProfile(lookup);
-               messenger.printTransactionReport(lookupProfile,transactionManager);
-               break;
-            case "switch": // change active profile
-                String switchProfileName=args[1];
-                Profile switchProfile=profileManager.findProfile(switchProfileName);
-                if(switchProfile!=null)
-                {
-                    activeProfile.replaceWith(switchProfile);
-                }
-                else
-                {
-                    messenger.profileNotFound(switchProfileName);
-                }
-                break;
-            case "profiles": // list all profiles
-                messenger.listProfiles(profileManager);
-                break;
-            case "generate": // generate a new profile
-                String newProfileName=args[1];
-                if(profileManager.findProfile(newProfileName)==null)
-                {
-                    Profile newProfile=ProfileGenerator.generate(newProfileName);
-                    profileExporter.export(newProfile);
-                }
-                else
-                {
-                    messenger.profileExists(newProfileName);
-                }
-                break;
-            default:
-                messenger.cmdNotFound(cmd);
+            switch(cmdName)
+            {
+                case "":
+                    break; // ignore empty command
+                case "help":
+                    messenger.help();
+                    break;
+                case "exit":
+                    messenger.exit();
+                    System.exit(0); // exits from the application
+                case "blocks":
+                    messenger.printBlocks(blockchain);
+                    break;
+                case "block":
+                    blockCmd(cmd);
+                    break;
+                case "mine":
+                    mineCmd(cmd);
+                    break;
+                case "send":
+                    sendCmd(cmd);
+                    break;
+                case "balance":
+                    balanceCmd(cmd);
+                    break;
+                case "switch": // change active profile
+                    switchCmd(cmd);
+                    break;
+                case "profiles": // list all profiles
+                    messenger.listProfiles(profileManager);
+                    break;
+                case "generate": // generate a new profile
+                    generateCmd(cmd);
+                    break;
+                default:
+                    messenger.cmdNotFound(cmdName);
+            }
+        }
+        catch(ExpectedNumberException e)
+        {
+            messenger.expectedNumber();
+        }
+        catch(NotEnoughArgumentsException e)
+        {
+            messenger.notEnoughArguments();
+        }
+    }
+
+    private void blockCmd(Command cmd) throws ExpectedNumberException, NotEnoughArgumentsException
+    {
+        int i=cmd.getIntArgument(1);
+        messenger.printBlock(blockchain,i);
+    }
+
+    private void mineCmd(Command cmd)
+    {
+        String transactionData=transactionManager.getTransactionData();
+        Block newBlock=miner.mine(activeProfile,transactionData,blockchain.getBlock(blockchain.length()-1));
+        if(newBlock!=null)
+        {
+            transactionManager.processAll();
+            blockchain.addBlock(newBlock);
+            BlockExporter.export(newBlock);
+            messenger.blockExported();
+        }
+        else
+        {
+            messenger.failedToMine();
+        }
+    }
+
+    private void sendCmd(Command cmd) throws ExpectedNumberException, NotEnoughArgumentsException
+    {
+        String to=cmd.getArgument(1);
+        int amount=cmd.getIntArgument(2);
+        Profile toProfile=profileManager.findProfile(to);
+        if(toProfile!=null) transactionManager.newTransaction(toProfile,amount);
+        else messenger.profileNotFound(to);
+    }
+
+    private void balanceCmd(Command cmd) throws NotEnoughArgumentsException
+    {
+        String lookup=cmd.getArgument(1);
+        Profile lookupProfile=profileManager.findProfile(lookup);
+        messenger.printTransactionReport(lookupProfile,transactionManager);
+    }
+
+    private void switchCmd(Command cmd) throws NotEnoughArgumentsException
+    {
+        String switchProfileName=cmd.getArgument(1);
+        Profile switchProfile=profileManager.findProfile(switchProfileName);
+        if(switchProfile!=null)
+        {
+            activeProfile.replaceWith(switchProfile);
+        }
+        else
+        {
+            messenger.profileNotFound(switchProfileName);
+        }
+    }
+
+    private void generateCmd(Command cmd) throws NotEnoughArgumentsException
+    {
+        String newProfileName=cmd.getArgument(1);
+        if(profileManager.findProfile(newProfileName)==null)
+        {
+            Profile newProfile=ProfileGenerator.generate(newProfileName);
+            profileExporter.export(newProfile);
+        }
+        else
+        {
+            messenger.profileExists(newProfileName);
         }
     }
 }

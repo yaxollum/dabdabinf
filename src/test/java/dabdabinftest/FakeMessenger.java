@@ -60,4 +60,9 @@ public class FakeMessenger implements Messenger
     public void noPrivateKey(Profile p) {}
     public void listProfiles(ProfileManager pm) {}
     public void profileExists(String name) {}
+    public void failedToMine() {}
+    public void successfullyMined(double timeInSeconds) {}
+    public void currentlyMining() {}
+    public void blockExported() {}
+    public void notEnoughArguments() {}
 }

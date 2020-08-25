@@ -78,11 +78,10 @@ public class Miner
             messenger.noPrivateKey(activeProfile);
             return null;
         }
-
+        
+        messenger.currentlyMining();
 	    long startTime=System.nanoTime();
 
-	    //Block lastBlock=blocks.get(blocks.size()-1);
-	    //lastBlock.blockHash="dabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabd";
         ByteArrayOutputStream newDataStream=new ByteArrayOutputStream();
         try
         {
@@ -103,31 +102,18 @@ public class Miner
 	    
 	    if(!mineLoop(newData,newData.length-10))
 	    {
-	        System.out.println("Unable to mine a new block.");
 	        return null;
 	    }
-	    
+
 	    Block newBlock=new Block();
-        return newBlock;
-        /*
 	    newBlock.blockNumber=lastBlock.blockNumber+1;
 	    newBlock.previousBlockHash=lastBlock.blockHash;
 	    newBlock.blockData=new String(newData);
 	    newBlock.generateHash();
-	    
-	    blocks.add(newBlock);
-	    
-	    long endTime=System.nanoTime();
-	    System.out.printf("New block successfully mined and added to blockchain in %,d nanoseconds.\n",endTime-startTime);
-	    if(verify())
-	    {
-	        System.out.println("The new block has been verified!");
-	        newBlock.export();
-	        System.out.println("The new block has been exported to a file!");
-	    }
-	    else
-	    {
-	        System.out.println("ERROR: Unable to successfully verify new block!");
-	    }*/
+
+        long nanosecondsElapsed=System.nanoTime()-startTime;
+        messenger.successfullyMined(nanosecondsElapsed/1e9);
+
+        return newBlock;
 	}
 }

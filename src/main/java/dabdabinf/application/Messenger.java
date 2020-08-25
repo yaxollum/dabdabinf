@@ -22,4 +22,9 @@ public interface Messenger
     void noPrivateKey(Profile p);
     void listProfiles(ProfileManager pm);
     void profileExists(String name);
+    void failedToMine();
+    void successfullyMined(double timeInSeconds);
+    void currentlyMining();
+    void blockExported();
+    void notEnoughArguments();
 }

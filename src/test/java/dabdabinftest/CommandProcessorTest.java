@@ -9,12 +9,13 @@ import dabdabinf.profile.ProfileExporter;
 import dabdabinf.transaction.TransactionManager;
 import dabdabinf.application.Messenger;
 import dabdabinf.application.CommandProcessor;
+import dabdabinf.application.Command;
 import dabdabinf.miner.Miner;
 
 public class CommandProcessorTest
 {
     @Test
-    public void shouldAnswerWithCmdNotFound()
+    public void shouldCallHelp()
     {
         Blockchain fb=new FakeBlockchain();
         ProfileManager fpm=new FakeProfileManager();
@@ -26,9 +27,9 @@ public class CommandProcessorTest
         
         CommandProcessor cp=new CommandProcessor(fb,fpm,profile,pe,ftm,fm,miner);
         
-        String[] test1={"help","exit"};
+        Command test1=new Command("help exit");
         cp.process(test1);
-        Assert.assertEquals(fm.helpCalled,1);
-        Assert.assertEquals(fm.exitCalled,0);
+        Assert.assertEquals(1,fm.helpCalled);
+        Assert.assertEquals(0,fm.exitCalled);
     }
 }
