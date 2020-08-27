@@ -2,34 +2,33 @@ package dabdabinf.blockchain;
 
 public class BlockchainValidator
 {
-    static boolean validate(Blockchain blockchain)
-	{/*
-	    String error1Message=General.readEntireFile(new File("messages/error1Message"));
-	    String error2Message=General.readEntireFile(new File("messages/error2Message"));
-	    
-		for(int i=1;i<blocks.size();++i)
+    static public void validate(Blockchain blockchain) throws BlockchainInvalidException
+	{
+        int blockchainLength=blockchain.length();
+
+        if(blockchain.getBlock(0).previousBlockHash!="dabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabd")
+        {
+            throw new BlockHashInvalidException(0);
+        }
+		for(int i=1;i<blockchainLength;++i)
 		{
-		    if(!blocks.get(i).previousBlockHash.equals(blocks.get(i-1).blockHash)) 
+		    if(!blockchain.getBlock(i).previousBlockHash.equals(blockchain.getBlock(i-1).blockHash)) 
 		    {
-		        System.out.printf(error1Message,i);
-		        return false;
+                throw new BlockHashInvalidException(i);
 		    }
 		}
-		for(int i=0;i<blocks.size();++i)
+		for(int i=0;i<blockchainLength;++i)
 		{
-		    if(blocks.get(i).blockData.length()<64||
-		    !blocks.get(i).previousBlockHash.equals(blocks.get(i).blockData.substring(0,64)))
+		    if(blockchain.getBlock(i).blockData.length()<64||
+		    !blockchain.getBlock(i).previousBlockHash.equals(blockchain.getBlock(i).blockData.substring(0,64)))
 		    {
-		        System.out.printf(error1Message,i);
-		        return false;
+                throw new BlockHashInvalidException(i);
 		    }
 		    
-		    if(blocks.get(i).blockNumber!=i)
+		    if(blockchain.getBlock(i).blockNumber!=i)
 		    {
-		        System.out.printf(error2Message,i);
-		        return false;
+                throw new BlockNumberInvalidException(i);
 		    }
-		}*/
-		return true;
+		}
 	}
 }

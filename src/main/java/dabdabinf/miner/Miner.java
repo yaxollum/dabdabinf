@@ -51,7 +51,7 @@ public class Miner
         /*
         Structure of a new block
         ------------------------
-        [hash of previous block]*[public key of miner]![signature of miner][transaction data][10-letter  m a g i c  w o r d]
+        [hash of previous block]*[public key of miner]![signature of miner][transaction data]?[10-letter  m a g i c  w o r d]
 
         What gets signed by the miner
         -----------------------------
@@ -65,7 +65,7 @@ public class Miner
         Alice then mines a new block (Block 123 in the blockchain) containing the information listed in the section "Structure of a new block".
 
         Now, if Bob were a malicious user, and he wanted to steal more of Alice's money, he could mine a new block (Block 124) with the following structure:
-        [hash of Block 123]*[Alice's public key]![Alice's signature from Block 123][transaction data from Block 123][a new 10-letter magic word computed by Bob]
+        [hash of Block 123]*[Alice's public key]![Alice's signature from Block 123][transaction data from Block 123]?[a new 10-letter magic word computed by Bob]
         When Bob publishes the new Block 124, others will verify it as completely valid. Alice's signature is valid (it matches her public key and the transaction data). Others will have no way of knowing whether this block was mined by a malicious user, or by Alice, who just wanted to send 500 more dabdabinf to Bob and 30 more dabdabinf to Carl.
 
         This is why Alice needs to sign the hash of the previous block. Including that hash guarentees that all signatures are UNIQUE.

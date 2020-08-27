@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import dabdabinf.profile.Profile;
 import dabdabinf.blockchain.Blockchain;
+import dabdabinf.block.Block;
 
 public class RealTransactionManager implements TransactionManager
 {
@@ -11,13 +12,16 @@ public class RealTransactionManager implements TransactionManager
     private List<Transaction> unprocessedTransactions;
     private Profile activeProfile;
     private Blockchain blockchain;
+    private ProfileManager profileManager;
     
-    public RealTransactionManager(Profile ap,Blockchain b)
+    public RealTransactionManager(Profile ap,Blockchain b,ProfileManager pm)
     {
         processedTransactions=new TransactionTable();
         unprocessedTransactions=new ArrayList<Transaction>();
         activeProfile=ap;
         blockchain=b;
+        profileManager=pm;
+        loadBlockchainTransactions();
     }
     
     public void newTransaction(Profile to,int amount)
@@ -68,5 +72,14 @@ public class RealTransactionManager implements TransactionManager
     public void discardUnprocessed()
     {
         unprocessedTransactions.clear();
+    }
+
+    private void loadBlockchainTransactions()
+    {
+        for(int i=0;i<blockchain.length();++i)
+        {
+            Block b=blockchain.getBlock(i);
+            
+        }
     }
 }

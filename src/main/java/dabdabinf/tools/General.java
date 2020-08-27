@@ -67,4 +67,14 @@ public class General
 	{
 	    return md.digest(data);
 	}
+
+    public static String randomDigitString(int len)
+    {
+        char[] str=new char[len];
+        for(int i=0;i<len;++i)
+        {
+            str[i]=rng.nextInt(10)+'0';
+        }
+        return new String(str);
+    }
 }

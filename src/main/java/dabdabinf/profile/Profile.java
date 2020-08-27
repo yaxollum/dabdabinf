@@ -22,7 +22,7 @@ public class Profile
     {
         return Rsa.sign(message,keys.getPrivate());
     }
-    public String publicKeyBase64()
+    public String getPublicKeyBase64()
     {
         return Rsa.publicToBase64(keys.getPublic());
     }

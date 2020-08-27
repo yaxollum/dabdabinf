@@ -7,7 +7,7 @@ import dabdabinf.profile.Profile;
 class TransactionTable
 {
     private List<List<Transaction>> transactionsByBlock;
-    private Map<Profile,List<Transaction>> sent,received;
+    private Map<PublicKey,List<Transaction>> sent,received;
     void add(Transaction t)
     {
         sent.get(t.from).add(t);
@@ -25,5 +25,11 @@ class TransactionTable
     List<Transaction> blockTransactions(int blockNumber)
     {
         return transactionsByBlock.get(blockNumber);
+    }
+    TransactionTable()
+    {
+        transactionsByBlock=new ArrayList<List<Transaction>>();
+        sent=new HashMap<PublicKey,List<Transaction>>();
+        received=new HashMap<PublicKey,List<Transaction>>();
     }
 }

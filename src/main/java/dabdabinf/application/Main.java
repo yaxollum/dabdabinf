@@ -6,6 +6,8 @@ import java.io.File;
 import dabdabinf.blockchain.Blockchain;
 import dabdabinf.blockchain.RealBlockchain;
 import dabdabinf.blockchain.BlockchainLoader;
+import dabdabinf.blockchain.BlockchainValidator;
+import dabdabinf.blockchain.BlockchainInvalidException;
 import dabdabinf.profile.*;
 import dabdabinf.transaction.*;
 import dabdabinf.miner.Miner;
@@ -32,16 +34,13 @@ public class Main
 	    return pm.findProfile(name,true);
 	}
 	*/
-	public static void main(String[] args)
+	public static void main(String[] args) throws BlockchainInvalidException
 	{
 		//initializeMessages();
 		//System.out.println(welcomeMessage);
 		input=new Scanner(System.in);
 		Blockchain blockchain=new RealBlockchain(BlockchainLoader.load());
-		/*if(blockchain.verify())
-		{
-		    System.out.printf("%d blocks successfully loaded and verified!\n",blockchain.length());
-		}*/
+        BlockchainValidator.validate(blockchain);
 
 		ProfileManager profileManager=new RealProfileManager(ProfileLoader.load());
         Profile activeProfile=profileManager.findProfile("example");

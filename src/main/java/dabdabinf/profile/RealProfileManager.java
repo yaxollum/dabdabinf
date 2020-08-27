@@ -14,18 +14,28 @@ public class RealProfileManager implements ProfileManager
         profiles=lp;
     }
     
-    public void addProfile(Profile p)
+    public boolean addProfile(Profile p)
     {
         if(findProfile(p.name)==null)
         {
            profiles.add(p); 
+           return true;
         }
+        return false;
     }
     public Profile findProfile(String name)
     {
         for(Profile p : profiles)
         {
-            if(name.equals(p.name)) return new Profile(p); //returs copy of found profile
+            if(name.equals(p.name)) return new Profile(p); //returns copy of found profile
+        }
+        return null;
+    }
+    public Profile findProfileWithPublicKey(String publicKeyString)
+    {
+        for(Profile p : profiles)
+        {
+            if(publicKeyString.equals(p.publicKeyBase64())) return new Profile(p); //returns copy of found profile
         }
         return null;
     }
@@ -38,5 +48,14 @@ public class RealProfileManager implements ProfileManager
             profilesString+=p.name+'\n';
         }
         return profilesString;
+    }
+    
+    public Profile createTmpProfile(PublicKey pk) // create a temporary profile for a public key (not exported to a file)
+    {
+        while(true)
+        {
+            Profile tmpProfile=new Profile("tmp"+General.randomDigitString(5));
+            if(addProfile(tmpProfile)) return tmpProfile;
+        }
     }
 }
