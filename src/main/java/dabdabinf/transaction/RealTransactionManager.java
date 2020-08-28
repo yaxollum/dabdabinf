@@ -78,7 +78,34 @@ public class RealTransactionManager implements TransactionManager
     {
         for(int i=0;i<blockchain.length();++i)
         {
-            Block b=blockchain.getBlock(i);
+            SplitBlockData splitData=new SplitBlockData(blockchain.getBlock(i),i);
+            String minerPublicKey=splitData.minerPublicKey;
+            String transactionData=splitData.transactionData;
+
+            Profile minerProfile=profileManager.findProfileWithPublicKey(minerPublicKey);
+            if(minerProfile==null)
+            {
+                minerProfile=profileManager.createTmpProfile(Rsa.base64ToPublicKey(minerPublicKey));
+            }
+            if(transactionData.length()==0) continue;
+            if(!transactionData.charAt(0)=='$') throw new TransactionDataInvalidException(i);
+            int start=1;
+            while(start<transactionData.length())
+            {
+                int end=transactionData.indexOf('@',start);
+                int amount=Integer.parseInt(transactionData.substring(start,end));
+                start=end+1;
+                end=transactionData.indexOf('$',start);
+                if(end==-1) end=transactionData.length();
+                String to=transactionData.substring(start,end);
+                Profile toProfile=profileManager.findProfileWithPublicKey(to);
+                if(toProfile==null)
+                {
+                    toProfile=profileManager.createTmpProfile(Rsa.base64ToPublicKey(to));
+                }
+                processedTransactions.add(new Transaction(minerProfile,toProfile,amount,i));
+                start=end+1;
+            }
             
         }
     }

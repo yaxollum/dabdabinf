@@ -16,19 +16,36 @@ public class BlockchainValidator
 		    {
                 throw new BlockHashInvalidException(i);
 		    }
+            if(!blockchain.getBlock(i).blockHash.startsWith("dabdab")
+            {
+                throw new BlockHashInvalidException(i);
+            }
 		}
 		for(int i=0;i<blockchainLength;++i)
 		{
-		    if(blockchain.getBlock(i).blockData.length()<64||
-		    !blockchain.getBlock(i).previousBlockHash.equals(blockchain.getBlock(i).blockData.substring(0,64)))
-		    {
+            Block block=blockchain.getBlock(i);
+            SplitBlockData splitData=new SplitBlockData(block.blockData,block.blockNumber);
+            if(block.previousBlockHash!=splitData.previousBlockHash) 
+            {
                 throw new BlockHashInvalidException(i);
-		    }
-		    
+            }
+            if(!General.isValidBase64(minerPublicKey)||
+                !General.isValidBase64(minerSignature))
+            {
+                throw new BlockBase64InvalidException(i);
+            }
+            if(!Rsa.verify(SplitBlockData.previousBlockHash+SplitBlockData.transactionData,minerSignature,Rsa.base64ToPublic(minerPublicKey)))
+            {
+                throw new BlockSignatureInvalidException(i);
+            }
 		    if(blockchain.getBlock(i).blockNumber!=i)
 		    {
                 throw new BlockNumberInvalidException(i);
 		    }
+            if(!General.isValidMagicWord(splitData.magicWord))
+            {
+                throw new BlockMagicWordInvalidException(i);
+            }
 		}
 	}
 }

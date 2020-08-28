@@ -91,6 +91,7 @@ public class Miner
             newDataStream.write('!');
             newDataStream.write(activeProfile.sign(lastBlock.blockHash+transactionData).getBytes());
             newDataStream.write(transactionData.getBytes());
+            newDataStream.write('?');
             newDataStream.write(new byte[10]);
         }
         catch(IOException e)

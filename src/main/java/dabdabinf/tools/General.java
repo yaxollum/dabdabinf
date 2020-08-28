@@ -77,4 +77,39 @@ public class General
         }
         return new String(str);
     }
+
+    public static boolean isValidBase64(String str)
+    {
+        for(int i=0;i<str.length();++i)
+        {
+            char c=str.charAt(i);
+            if(c=='='||
+                c=='+'||
+                c=='/'||
+                (c>='A'&&c<='Z')||
+                (c>='a'&&c<='z'))
+            {
+                continue;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isValidMagicWord(String str)
+    {
+        if(str.length()!=10) return false;
+        for(int i=0;i<10;++i)
+        {
+            char c=str.charAt(i);
+            if(!(c>='a'&&c<='z'))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
