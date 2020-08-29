@@ -22,11 +22,20 @@ public class FakeProfileManager implements ProfileManager
         ++findProfileCalled;
         return null;
     }
-    public void addProfile(Profile p)
+    public boolean addProfile(Profile p)
     {
         ++addProfileCalled;
+        return true;
     }
     public String getProfileList() 
+    {
+        return null;
+    }
+    public Profile findProfileWithPublicKey(String publicKeyString)
+    {
+        return null;
+    }
+    public Profile createTmpProfile(PublicKey pk)
     {
         return null;
     }

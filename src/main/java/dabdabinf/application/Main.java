@@ -7,7 +7,7 @@ import dabdabinf.blockchain.Blockchain;
 import dabdabinf.blockchain.RealBlockchain;
 import dabdabinf.blockchain.BlockchainLoader;
 import dabdabinf.blockchain.BlockchainValidator;
-import dabdabinf.blockchain.BlockchainInvalidException;
+import dabdabinf.block.BlockInvalidException;
 import dabdabinf.profile.*;
 import dabdabinf.transaction.*;
 import dabdabinf.miner.Miner;
@@ -34,7 +34,7 @@ public class Main
 	    return pm.findProfile(name,true);
 	}
 	*/
-	public static void main(String[] args) throws BlockchainInvalidException
+	public static void main(String[] args) throws BlockInvalidException
 	{
 		//initializeMessages();
 		//System.out.println(welcomeMessage);
@@ -45,7 +45,7 @@ public class Main
 		ProfileManager profileManager=new RealProfileManager(ProfileLoader.load());
         Profile activeProfile=profileManager.findProfile("example");
 		
-		TransactionManager transactionManager=new RealTransactionManager(activeProfile,blockchain);
+		TransactionManager transactionManager=new RealTransactionManager(activeProfile,blockchain,profileManager);
 		
 		Messenger messenger=new RealMessenger(System.out);
 

@@ -4,15 +4,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import java.util.Random;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class General
 {
     static MessageDigest md;
+    static Random rng;
     
     static
     {
+        rng=new Random();
         try
 		{
 			md=MessageDigest.getInstance("SHA-256");
@@ -73,7 +76,7 @@ public class General
         char[] str=new char[len];
         for(int i=0;i<len;++i)
         {
-            str[i]=rng.nextInt(10)+'0';
+            str[i]=(char)(rng.nextInt(10)+'0');
         }
         return new String(str);
     }

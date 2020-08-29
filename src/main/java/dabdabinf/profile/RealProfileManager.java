@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.File;
 import java.security.*;
+import dabdabinf.tools.General;
 
 public class RealProfileManager implements ProfileManager
 {
@@ -35,7 +36,7 @@ public class RealProfileManager implements ProfileManager
     {
         for(Profile p : profiles)
         {
-            if(publicKeyString.equals(p.publicKeyBase64())) return new Profile(p); //returns copy of found profile
+            if(publicKeyString.equals(p.getPublicKeyBase64())) return new Profile(p); //returns copy of found profile
         }
         return null;
     }
@@ -54,7 +55,7 @@ public class RealProfileManager implements ProfileManager
     {
         while(true)
         {
-            Profile tmpProfile=new Profile("tmp"+General.randomDigitString(5));
+            Profile tmpProfile=new Profile("tmp"+General.randomDigitString(5),new KeyPair(pk,null));
             if(addProfile(tmpProfile)) return tmpProfile;
         }
     }

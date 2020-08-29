@@ -87,7 +87,7 @@ public class Miner
         {
             newDataStream.write(lastBlock.blockHash.getBytes());
             newDataStream.write('*');
-            newDataStream.write(activeProfile.publicKeyBase64().getBytes());
+            newDataStream.write(activeProfile.getPublicKeyBase64().getBytes());
             newDataStream.write('!');
             newDataStream.write(activeProfile.sign(lastBlock.blockHash+transactionData).getBytes());
             newDataStream.write(transactionData.getBytes());

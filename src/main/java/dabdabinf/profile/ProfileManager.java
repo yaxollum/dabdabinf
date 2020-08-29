@@ -8,6 +8,8 @@ import java.security.*;
 public interface ProfileManager
 {
     public String getProfileList();
-    public void addProfile(Profile p);
+    public boolean addProfile(Profile p);
     public Profile findProfile(String name);
+    public Profile findProfileWithPublicKey(String publicKeyString);
+    public Profile createTmpProfile(PublicKey pk);
 }

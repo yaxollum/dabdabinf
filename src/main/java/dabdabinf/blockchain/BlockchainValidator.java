@@ -1,8 +1,11 @@
 package dabdabinf.blockchain;
 
+import dabdabinf.block.*;
+import dabdabinf.tools.*;
+
 public class BlockchainValidator
 {
-    static public void validate(Blockchain blockchain) throws BlockchainInvalidException
+    static public void validate(Blockchain blockchain) throws BlockInvalidException
 	{
         int blockchainLength=blockchain.length();
 
@@ -16,7 +19,7 @@ public class BlockchainValidator
 		    {
                 throw new BlockHashInvalidException(i);
 		    }
-            if(!blockchain.getBlock(i).blockHash.startsWith("dabdab")
+            if(!blockchain.getBlock(i).blockHash.startsWith("dabdab"))
             {
                 throw new BlockHashInvalidException(i);
             }
@@ -29,12 +32,14 @@ public class BlockchainValidator
             {
                 throw new BlockHashInvalidException(i);
             }
-            if(!General.isValidBase64(minerPublicKey)||
-                !General.isValidBase64(minerSignature))
+            if(!General.isValidBase64(splitData.minerPublicKey)||
+                !General.isValidBase64(splitData.minerSignature))
             {
                 throw new BlockBase64InvalidException(i);
             }
-            if(!Rsa.verify(SplitBlockData.previousBlockHash+SplitBlockData.transactionData,minerSignature,Rsa.base64ToPublic(minerPublicKey)))
+            if(!Rsa.verify(splitData.previousBlockHash+splitData.transactionData,
+                splitData.minerSignature,
+                Rsa.base64ToPublic(splitData.minerPublicKey)))
             {
                 throw new BlockSignatureInvalidException(i);
             }

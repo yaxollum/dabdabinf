@@ -1,3 +1,5 @@
+package dabdabinf.block;
+
 public class SplitBlockData
 {
     public String previousBlockHash;

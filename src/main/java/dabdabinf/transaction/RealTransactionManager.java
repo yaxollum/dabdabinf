@@ -3,8 +3,11 @@ package dabdabinf.transaction;
 import java.util.List;
 import java.util.ArrayList;
 import dabdabinf.profile.Profile;
+import dabdabinf.profile.ProfileManager;
 import dabdabinf.blockchain.Blockchain;
 import dabdabinf.block.Block;
+import dabdabinf.block.SplitBlockData;
+import dabdabinf.tools.Rsa;
 
 public class RealTransactionManager implements TransactionManager
 {
@@ -14,7 +17,7 @@ public class RealTransactionManager implements TransactionManager
     private Blockchain blockchain;
     private ProfileManager profileManager;
     
-    public RealTransactionManager(Profile ap,Blockchain b,ProfileManager pm)
+    public RealTransactionManager(Profile ap,Blockchain b,ProfileManager pm) throws TransactionDataInvalidException
     {
         processedTransactions=new TransactionTable();
         unprocessedTransactions=new ArrayList<Transaction>();
@@ -64,7 +67,7 @@ public class RealTransactionManager implements TransactionManager
         String unprocessedReport="";
         for(Transaction t : unprocessedTransactions)
         {
-            unprocessedReport+=String.format("Send %d dabdabinf to address %s\n",t.amount,t.to.publicKeyBase64());
+            unprocessedReport+=String.format("Send %d dabdabinf to address %s\n",t.amount,t.to.getPublicKeyBase64());
         }
         return unprocessedReport;
     }
@@ -74,21 +77,24 @@ public class RealTransactionManager implements TransactionManager
         unprocessedTransactions.clear();
     }
 
-    private void loadBlockchainTransactions()
+    private void loadBlockchainTransactions() throws TransactionDataInvalidException
     {
         for(int i=0;i<blockchain.length();++i)
         {
-            SplitBlockData splitData=new SplitBlockData(blockchain.getBlock(i),i);
+            SplitBlockData splitData=new SplitBlockData(blockchain.getBlock(i).blockData,i);
             String minerPublicKey=splitData.minerPublicKey;
             String transactionData=splitData.transactionData;
 
             Profile minerProfile=profileManager.findProfileWithPublicKey(minerPublicKey);
             if(minerProfile==null)
             {
-                minerProfile=profileManager.createTmpProfile(Rsa.base64ToPublicKey(minerPublicKey));
+                minerProfile=profileManager.createTmpProfile(Rsa.base64ToPublic(minerPublicKey));
             }
             if(transactionData.length()==0) continue;
-            if(!transactionData.charAt(0)=='$') throw new TransactionDataInvalidException(i);
+            if(!(transactionData.charAt(0)=='$'))
+            {
+                throw new TransactionDataInvalidException(i);
+            }
             int start=1;
             while(start<transactionData.length())
             {
@@ -101,7 +107,7 @@ public class RealTransactionManager implements TransactionManager
                 Profile toProfile=profileManager.findProfileWithPublicKey(to);
                 if(toProfile==null)
                 {
-                    toProfile=profileManager.createTmpProfile(Rsa.base64ToPublicKey(to));
+                    toProfile=profileManager.createTmpProfile(Rsa.base64ToPublic(to));
                 }
                 processedTransactions.add(new Transaction(minerProfile,toProfile,amount,i));
                 start=end+1;
