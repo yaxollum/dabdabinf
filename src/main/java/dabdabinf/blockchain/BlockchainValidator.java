@@ -5,11 +5,11 @@ import dabdabinf.tools.*;
 
 public class BlockchainValidator
 {
-    static public void validate(Blockchain blockchain) throws BlockInvalidException
+    static public void validate(Blockchain blockchain) throws BlockInvalidException,SplitBlockDataException
 	{
         int blockchainLength=blockchain.length();
 
-        if(blockchain.getBlock(0).previousBlockHash!="dabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabd")
+        if(!blockchain.getBlock(0).previousBlockHash.equals("dabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabdabd"))
         {
             throw new BlockHashInvalidException(0);
         }
@@ -28,7 +28,7 @@ public class BlockchainValidator
 		{
             Block block=blockchain.getBlock(i);
             SplitBlockData splitData=new SplitBlockData(block.blockData,block.blockNumber);
-            if(block.previousBlockHash!=splitData.previousBlockHash) 
+            if(!block.previousBlockHash.equals(splitData.previousBlockHash))
             {
                 throw new BlockHashInvalidException(i);
             }

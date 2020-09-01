@@ -7,6 +7,7 @@ import dabdabinf.profile.ProfileManager;
 import dabdabinf.blockchain.Blockchain;
 import dabdabinf.block.Block;
 import dabdabinf.block.SplitBlockData;
+import dabdabinf.block.SplitBlockDataException;
 import dabdabinf.tools.Rsa;
 
 public class RealTransactionManager implements TransactionManager
@@ -17,7 +18,7 @@ public class RealTransactionManager implements TransactionManager
     private Blockchain blockchain;
     private ProfileManager profileManager;
     
-    public RealTransactionManager(Profile ap,Blockchain b,ProfileManager pm) throws TransactionDataInvalidException
+    public RealTransactionManager(Profile ap,Blockchain b,ProfileManager pm) throws TransactionDataInvalidException,SplitBlockDataException
     {
         processedTransactions=new TransactionTable();
         unprocessedTransactions=new ArrayList<Transaction>();
@@ -77,7 +78,7 @@ public class RealTransactionManager implements TransactionManager
         unprocessedTransactions.clear();
     }
 
-    private void loadBlockchainTransactions() throws TransactionDataInvalidException
+    private void loadBlockchainTransactions() throws TransactionDataInvalidException,SplitBlockDataException
     {
         for(int i=0;i<blockchain.length();++i)
         {

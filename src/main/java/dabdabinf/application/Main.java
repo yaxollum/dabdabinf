@@ -8,6 +8,7 @@ import dabdabinf.blockchain.RealBlockchain;
 import dabdabinf.blockchain.BlockchainLoader;
 import dabdabinf.blockchain.BlockchainValidator;
 import dabdabinf.block.BlockInvalidException;
+import dabdabinf.block.SplitBlockDataException;
 import dabdabinf.profile.*;
 import dabdabinf.transaction.*;
 import dabdabinf.miner.Miner;
@@ -34,7 +35,7 @@ public class Main
 	    return pm.findProfile(name,true);
 	}
 	*/
-	public static void main(String[] args) throws BlockInvalidException
+	public static void main(String[] args) throws BlockInvalidException,SplitBlockDataException
 	{
 		//initializeMessages();
 		//System.out.println(welcomeMessage);
