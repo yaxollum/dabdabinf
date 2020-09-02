@@ -25,7 +25,7 @@ public class SplitBlockData
         if(end!=-1)
         {   // Found transaction data: miner signature comes before '$'
             minerSignature=blockData.substring(start,end);
-            start=end+1;
+            start=end;
             end=blockData.indexOf('?',start);
             if(end==-1) throw new SplitBlockDataException("question mark (?)",blockNumber);
             // extracting transaction data

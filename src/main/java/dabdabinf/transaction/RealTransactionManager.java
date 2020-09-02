@@ -58,7 +58,7 @@ public class RealTransactionManager implements TransactionManager
         
         for(Transaction t : unprocessedTransactions)
         {   
-            transactionData+=t.toString();
+            transactionData+=t.getBlockchainFormat();
         }
         return transactionData;
     }

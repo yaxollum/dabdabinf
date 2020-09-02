@@ -9,29 +9,30 @@ import java.security.PublicKey;
 
 class TransactionTable
 {
-    private List<List<Transaction>> transactionsByBlock;
+    private Map<Integer,List<Transaction>> transactionsByBlock;
     private Map<PublicKey,List<Transaction>> sent,received;
+
     void add(Transaction t)
     {
-        sent.get(t.from).add(t);
-        received.get(t.to).add(t);
-        transactionsByBlock.get(t.blockNumber).add(t);
+        sent.computeIfAbsent(t.from.keys.getPublic(), k -> new ArrayList<Transaction>()).add(t);
+        received.computeIfAbsent(t.to.keys.getPublic(), k -> new ArrayList<Transaction>()).add(t);
+        transactionsByBlock.computeIfAbsent(t.blockNumber, k -> new ArrayList<Transaction>()).add(t);
     }
     List<Transaction> sentTransactions(Profile p)
     {
-        return sent.get(p);
+        return sent.computeIfAbsent(p.keys.getPublic(), k -> new ArrayList<Transaction>());
     }
     List<Transaction> receivedTransactions(Profile p)
     {
-        return received.get(p);
+        return received.computeIfAbsent(p.keys.getPublic(), k -> new ArrayList<Transaction>());
     }
     List<Transaction> blockTransactions(int blockNumber)
     {
-        return transactionsByBlock.get(blockNumber);
+        return transactionsByBlock.computeIfAbsent(blockNumber, k -> new ArrayList<Transaction>());
     }
     TransactionTable()
     {
-        transactionsByBlock=new ArrayList<List<Transaction>>();
+        transactionsByBlock=new HashMap<Integer,List<Transaction>>();
         sent=new HashMap<PublicKey,List<Transaction>>();
         received=new HashMap<PublicKey,List<Transaction>>();
     }

@@ -90,12 +90,14 @@ public class General
                 c=='+'||
                 c=='/'||
                 (c>='A'&&c<='Z')||
-                (c>='a'&&c<='z'))
+                (c>='a'&&c<='z')||
+                (c>='0'&&c<='9'))
             {
                 continue;
             }
             else
             {
+                //System.out.println(String.format("BAD CHAR: '%c'",c));
                 return false;
             }
         }

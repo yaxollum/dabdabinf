@@ -16,14 +16,14 @@ public class Transaction
     }
     public String getBlockchainFormat()
     {
-        return String.format("$%d@%s",amount,to);
+        return String.format("$%d@%s",amount,to.getPublicKeyBase64());
     }
     public String getReportFormat()
     {
         return String.format("block #%d: %s --> %d dabdabinf --> %s\n",
             blockNumber,
-            from.toString(),
+            from.getPublicKeyBase64(),
             amount,
-            to.toString());
+            to.getPublicKeyBase64());
     }
 }

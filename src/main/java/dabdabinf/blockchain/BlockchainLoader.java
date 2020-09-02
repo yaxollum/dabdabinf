@@ -28,9 +28,16 @@ public class BlockchainLoader
 		{
 			String blockFileName=blockFile.getName();
 			Block block=new Block();
-			block.blockNumber=Integer.parseInt(blockFileName.substring(5));
-			block.blockData=General.readEntireFile(blockFile);
-			blocks.add(block);
+            if(blockFileName.startsWith("block"))
+            {
+                try
+                {
+                    block.blockNumber=Integer.parseInt(blockFileName.substring(5));
+                    block.blockData=General.readEntireFile(blockFile);
+                    blocks.add(block);
+                }
+                catch(NumberFormatException e) {}
+            }
 		}
 		Collections.sort(blocks);
 		
