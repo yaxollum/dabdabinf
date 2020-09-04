@@ -28,7 +28,7 @@ public class RealProfileManager implements ProfileManager
     {
         for(Profile p : profiles)
         {
-            if(name.equals(p.name)) return new Profile(p); //returns copy of found profile
+            if(name.equals(p.name)) return p; 
         }
         return null;
     }
@@ -36,7 +36,7 @@ public class RealProfileManager implements ProfileManager
     {
         for(Profile p : profiles)
         {
-            if(publicKeyString.equals(p.getPublicKeyBase64())) return new Profile(p); //returns copy of found profile
+            if(publicKeyString.equals(p.getPublicKeyBase64())) return p;
         }
         return null;
     }

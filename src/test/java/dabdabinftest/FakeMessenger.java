@@ -1,17 +1,17 @@
 package dabdabinftest;
 
 import dabdabinf.application.Messenger;
-import dabdabinf.blockchain.Blockchain;
+import dabdabinf.block.Block;
 import dabdabinf.profile.Profile;
 import dabdabinf.profile.ProfileManager;
 import dabdabinf.transaction.TransactionManager;
+import dabdabinf.transaction.BlockTransactions;
 
 public class FakeMessenger implements Messenger
 {
     int helpCalled=0;
     int exitCalled=0;
     int printBlockCalled=0;
-    int printBlocksCalled=0;
     int cmdNotFoundCalled=0;
     int blockOutOfRangeCalled=0;
     int expectedNumberCalled=0;
@@ -26,13 +26,9 @@ public class FakeMessenger implements Messenger
     {
         ++exitCalled;
     }
-    public void printBlock(Blockchain blockchain,int i)
+    public void printBlock(Block block,BlockTransactions bt)
     {
         ++printBlockCalled;
-    }
-    public void printBlocks(Blockchain blockchain)
-    {
-        ++printBlocksCalled;
     }
     public void cmdNotFound(String cmd)
     {
@@ -66,4 +62,5 @@ public class FakeMessenger implements Messenger
     public void blockExported() {}
     public void notEnoughArguments() {}
     public void listUnprocessed(TransactionManager tm) {}
+    public void printDashedLine() {}
 }

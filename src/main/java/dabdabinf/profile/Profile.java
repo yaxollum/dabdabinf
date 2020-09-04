@@ -5,19 +5,21 @@ import dabdabinf.tools.Rsa;
 
 public class Profile
 {
-    public String name;
-    public KeyPair keys;
-    public Profile(){}
+    public final String name;
+    public final KeyPair keys;
+
     public Profile(String n,KeyPair k)
     {
         name=n;
         keys=k;
     }
+    /*
     public Profile(Profile other)
     {
         name=other.name;
         keys=other.keys;
     }
+    */
     public String sign(String message)
     {
         return Rsa.sign(message,keys.getPrivate());
@@ -29,10 +31,5 @@ public class Profile
     public boolean hasPrivateKey()
     {
         return keys.getPrivate()!=null;
-    }
-    public void replaceWith(Profile other)
-    {
-        name=other.name;
-        keys=other.keys;
     }
 }

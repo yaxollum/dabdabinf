@@ -1,16 +1,16 @@
 package dabdabinf.application;
 
 import dabdabinf.profile.ProfileManager;
-import dabdabinf.blockchain.Blockchain;
+import dabdabinf.block.Block;
 import dabdabinf.profile.Profile;
 import dabdabinf.transaction.TransactionManager;
+import dabdabinf.transaction.BlockTransactions;
 
 public interface Messenger
 {
     void help();
     void exit();
-    void printBlock(Blockchain blockchain,int i);
-    void printBlocks(Blockchain blockchain);
+    void printBlock(Block block,BlockTransactions bt);
     void expectedNumber();
     void cmdNotFound(String cmd);
     void blockOutOfRange();
@@ -28,4 +28,5 @@ public interface Messenger
     void blockExported();
     void notEnoughArguments();
     void listUnprocessed(TransactionManager tm);
+    void printDashedLine();
 }

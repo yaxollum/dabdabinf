@@ -10,7 +10,7 @@ public class CommandProcessor
 {
     private Blockchain blockchain;
     private ProfileManager profileManager;
-    private Profile activeProfile;
+    private ActiveProfile activeProfile;
     private ProfileExporter profileExporter;
     private TransactionManager transactionManager;
     private Messenger messenger;
@@ -18,7 +18,7 @@ public class CommandProcessor
     
     public CommandProcessor(Blockchain bc,
         ProfileManager pm,
-        Profile ap,
+        ActiveProfile ap,
         ProfileExporter pe,
         TransactionManager tm,
         Messenger _messenger,
@@ -33,7 +33,7 @@ public class CommandProcessor
         miner=_miner;
     }
     
-    public void process(Command cmd)
+    public void process(Command cmd) throws BlockMinerNotAddedException,BlockNumberInvalidException
     {
         String cmdName=cmd.getName();
         try
@@ -49,7 +49,7 @@ public class CommandProcessor
                     messenger.exit();
                     System.exit(0); // exits from the application
                 case "blocks":
-                    messenger.printBlocks(blockchain);
+                    blocksCmd();
                     break;
                 case "block":
                     blockCmd(cmd);
@@ -92,13 +92,29 @@ public class CommandProcessor
     private void blockCmd(Command cmd) throws ExpectedNumberException, NotEnoughArgumentsException
     {
         int i=cmd.getIntArgument(1);
-        messenger.printBlock(blockchain,i);
+        if(i>=0 && i<blockchain.length())
+        {
+            messenger.printBlock(blockchain.getBlock(i),transactionManager.getBlockTransactions(i));
+        }
+        else
+        {
+            messenger.blockOutOfRange();
+        }
     }
 
-    private void mineCmd(Command cmd)
+    private void blocksCmd()
+    {
+        for(int i=0;i<blockchain.length();++i)
+        {
+            messenger.printBlock(blockchain.getBlock(i),transactionManager.getBlockTransactions(i));
+            messenger.printDashedLine();
+        }
+    }
+
+    private void mineCmd(Command cmd) throws BlockMinerNotAddedException,BlockNumberInvalidException
     {
         String transactionData=transactionManager.getTransactionData();
-        Block newBlock=miner.mine(activeProfile,transactionData,blockchain.getBlock(blockchain.length()-1));
+        Block newBlock=miner.mine(activeProfile.get(),transactionData,blockchain.getBlock(blockchain.length()-1));
         if(newBlock!=null)
         {
             transactionManager.processAll();
@@ -134,7 +150,7 @@ public class CommandProcessor
         Profile switchProfile=profileManager.findProfile(switchProfileName);
         if(switchProfile!=null)
         {
-            activeProfile.replaceWith(switchProfile);
+            activeProfile.set(switchProfile);
             transactionManager.discardUnprocessed(); 
             // discard unprocessed transactions from old active profile
         }

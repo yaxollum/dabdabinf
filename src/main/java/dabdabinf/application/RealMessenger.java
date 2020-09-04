@@ -1,10 +1,11 @@
 package dabdabinf.application;
 
 import java.io.PrintStream;
-import dabdabinf.blockchain.Blockchain;
+import dabdabinf.block.Block;
 import dabdabinf.profile.Profile;
 import dabdabinf.profile.ProfileManager;
 import dabdabinf.transaction.TransactionManager;
+import dabdabinf.transaction.BlockTransactions;
 
 public class RealMessenger implements Messenger
 {
@@ -22,13 +23,10 @@ public class RealMessenger implements Messenger
     {
         stdout.println("See you next time ...");
     }
-    public void printBlock(Blockchain blockchain,int i)
+    public void printBlock(Block block,BlockTransactions bt)
     {
-        stdout.println(blockchain.blockToString(i));
-    }
-    public void printBlocks(Blockchain blockchain)
-    {
-        stdout.println(blockchain);
+        stdout.println(block);
+        stdout.print(bt);
     }
     public void cmdNotFound(String cmd)
     {
@@ -99,5 +97,9 @@ public class RealMessenger implements Messenger
     public void listUnprocessed(TransactionManager tm)
     {
         stdout.print(tm.getUnprocessed());
+    }
+    public void printDashedLine()
+    {
+        stdout.println("------------------------------------------------------------");
     }
 }

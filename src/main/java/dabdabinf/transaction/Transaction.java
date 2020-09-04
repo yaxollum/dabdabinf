@@ -22,8 +22,8 @@ public class Transaction
     {
         return String.format("block #%d: %s --> %d dabdabinf --> %s\n",
             blockNumber,
-            from.getPublicKeyBase64(),
+            from.name,
             amount,
-            to.getPublicKeyBase64());
+            to.name);
     }
 }

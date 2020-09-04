@@ -10,8 +10,6 @@ import dabdabinf.application.Messenger;
 
 public interface Blockchain
 {
-	public String blockToString(int i);
-	public String toString();
 	public int length();
     public Block getBlock(int i);
     public void addBlock(Block b);

@@ -12,7 +12,7 @@ public class Block implements Comparable<Block>
 	
 	public String toString()
 	{
-        return String.format("Block Number: %d\nPrevious Block Hash: %s\nBlock Data: %s\nBlock Hash: %s\n",
+        return String.format("Block Number: %d\n\nPrevious Block Hash: %s\n\nBlock Data: %s\n\nBlock Hash: %s\n",
         blockNumber,
         previousBlockHash,
         blockData,

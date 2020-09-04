@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import dabdabinf.profile.Profile;
 import dabdabinf.transaction.TransactionManager;
 import dabdabinf.transaction.TransactionReport;
+import dabdabinf.transaction.BlockTransactions;
 
 public class FakeTransactionManager implements TransactionManager
 {
@@ -14,6 +15,10 @@ public class FakeTransactionManager implements TransactionManager
         ++newTransactionCalled;
     }
     public TransactionReport getTransactionReport(Profile lp)
+    {
+        return null;
+    }
+    public BlockTransactions getBlockTransactions(int blockNumber)
     {
         return null;
     }

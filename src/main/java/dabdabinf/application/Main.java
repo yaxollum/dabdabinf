@@ -35,7 +35,7 @@ public class Main
 	    return pm.findProfile(name,true);
 	}
 	*/
-	public static void main(String[] args) throws BlockInvalidException,SplitBlockDataException
+	public static void main(String[] args) throws BlockInvalidException,SplitBlockDataException,BlockMinerNotAddedException
 	{
 		//initializeMessages();
 		//System.out.println(welcomeMessage);
@@ -44,7 +44,7 @@ public class Main
         BlockchainValidator.validate(blockchain);
 
 		ProfileManager profileManager=new RealProfileManager(ProfileLoader.load());
-        Profile activeProfile=profileManager.findProfile("example");
+        ActiveProfile activeProfile=new ActiveProfile(profileManager.findProfile("example"));
 		
 		TransactionManager transactionManager=new RealTransactionManager(activeProfile,blockchain,profileManager);
 		
@@ -64,7 +64,7 @@ public class Main
 		
 		while(true)
 		{
-            messenger.prompt(activeProfile);
+            messenger.prompt(activeProfile.get());
             if(!input.hasNextLine()) break;
 			String cmd=input.nextLine();
 			cp.process(new Command(cmd));

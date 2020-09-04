@@ -12,31 +12,6 @@ public class RealBlockchain implements Blockchain
 {
 	private List<Block> blocks;
 	private Messenger messenger;
-	
-	public String blockToString(int i)
-	{
-		if(i>=blocks.size())
-		{
-			messenger.blockOutOfRange();
-			return "";
-		}
-		else
-		{
-			return blocks.get(i).toString();
-		}
-	}
-	
-	public String toString()
-	{
-	    String res="";
-		for(Block b : blocks)
-		{
-			res+=b.toString();
-			res+='\n';
-		}
-		return res;
-	}
-	
 	public int length()
 	{
 	    return blocks.size();

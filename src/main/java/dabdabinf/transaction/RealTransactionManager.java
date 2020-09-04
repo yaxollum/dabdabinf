@@ -4,21 +4,23 @@ import java.util.List;
 import java.util.ArrayList;
 import dabdabinf.profile.Profile;
 import dabdabinf.profile.ProfileManager;
+import dabdabinf.profile.ActiveProfile;
 import dabdabinf.blockchain.Blockchain;
 import dabdabinf.block.Block;
 import dabdabinf.block.SplitBlockData;
 import dabdabinf.block.SplitBlockDataException;
+import dabdabinf.block.BlockNumberInvalidException;
 import dabdabinf.tools.Rsa;
 
 public class RealTransactionManager implements TransactionManager
 {
     private TransactionTable processedTransactions;
     private List<Transaction> unprocessedTransactions;
-    private Profile activeProfile;
+    private ActiveProfile activeProfile;
     private Blockchain blockchain;
     private ProfileManager profileManager;
     
-    public RealTransactionManager(Profile ap,Blockchain b,ProfileManager pm) throws TransactionDataInvalidException,SplitBlockDataException
+    public RealTransactionManager(ActiveProfile ap,Blockchain b,ProfileManager pm) throws TransactionDataInvalidException,SplitBlockDataException,BlockMinerNotAddedException,BlockNumberInvalidException
     {
         processedTransactions=new TransactionTable();
         unprocessedTransactions=new ArrayList<Transaction>();
@@ -35,21 +37,27 @@ public class RealTransactionManager implements TransactionManager
             System.out.println("Transaction amount must be positive!");
             return;
         }
-        unprocessedTransactions.add(new Transaction(activeProfile,to,amount,blockchain.length()));
+        unprocessedTransactions.add(new Transaction(activeProfile.get(),to,amount,blockchain.length()));
     }
 
-    public void processAll()
+    public void processAll() throws BlockMinerNotAddedException,BlockNumberInvalidException
     {
+        processedTransactions.addMiner(activeProfile.get(),blockchain.length());
         for(Transaction ut : unprocessedTransactions)
         {
-            processedTransactions.add(ut);
+            processedTransactions.addTransaction(ut);
         }
         unprocessedTransactions.clear();
     }
     public TransactionReport getTransactionReport(Profile lookup)
     {
         return new TransactionReport(processedTransactions.sentTransactions(lookup),
-            processedTransactions.receivedTransactions(lookup));
+            processedTransactions.receivedTransactions(lookup),
+            processedTransactions.minedBlocks(lookup));
+    }
+    public BlockTransactions getBlockTransactions(int blockNumber)
+    {
+        return processedTransactions.blockTransactions(blockNumber);
     }
 
     public String getTransactionData()
@@ -68,7 +76,7 @@ public class RealTransactionManager implements TransactionManager
         String unprocessedReport="";
         for(Transaction t : unprocessedTransactions)
         {
-            unprocessedReport+=String.format("Send %d dabdabinf to address %s\n",t.amount,t.to.getPublicKeyBase64());
+            unprocessedReport+=String.format("Send %d dabdabinf to %s\n",t.amount,t.to.name);
         }
         return unprocessedReport;
     }
@@ -78,7 +86,7 @@ public class RealTransactionManager implements TransactionManager
         unprocessedTransactions.clear();
     }
 
-    private void loadBlockchainTransactions() throws TransactionDataInvalidException,SplitBlockDataException
+    private void loadBlockchainTransactions() throws TransactionDataInvalidException,SplitBlockDataException,BlockMinerNotAddedException,BlockNumberInvalidException
     {
         for(int i=0;i<blockchain.length();++i)
         {
@@ -91,6 +99,7 @@ public class RealTransactionManager implements TransactionManager
             {
                 minerProfile=profileManager.createTmpProfile(Rsa.base64ToPublic(minerPublicKey));
             }
+            processedTransactions.addMiner(minerProfile,i);
             if(transactionData.length()==0) continue;
             if(!(transactionData.charAt(0)=='$'))
             {
@@ -110,7 +119,7 @@ public class RealTransactionManager implements TransactionManager
                 {
                     toProfile=profileManager.createTmpProfile(Rsa.base64ToPublic(to));
                 }
-                processedTransactions.add(new Transaction(minerProfile,toProfile,amount,i));
+                processedTransactions.addTransaction(new Transaction(minerProfile,toProfile,amount,i));
                 start=end+1;
             }
             
