@@ -5,6 +5,8 @@ import dabdabinf.block.*;
 import dabdabinf.profile.*;
 import dabdabinf.transaction.*;
 import dabdabinf.miner.Miner;
+import dabdabinf.tools.Rsa;
+import java.security.KeyPair;
 
 public class CommandProcessor
 {
@@ -69,11 +71,20 @@ public class CommandProcessor
                 case "profiles": // list all profiles
                     messenger.listProfiles(profileManager);
                     break;
+                case "profile": // show infomation about a profile
+                    profileCmd(cmd);
+                    break;
                 case "generate": // generate a new profile
                     generateCmd(cmd);
                     break;
                 case "unprocessed": // list unprocessed transactions
                     messenger.listUnprocessed(transactionManager);
+                    break;
+                case "full-import": // import both public and private key
+                    fullImportCmd(cmd);
+                    break;
+                case "import": // import only public key
+                    importCmd(cmd);
                     break;
                 default:
                     messenger.cmdNotFound(cmdName);
@@ -167,6 +178,54 @@ public class CommandProcessor
         {
             Profile newProfile=ProfileGenerator.generate(newProfileName);
             profileExporter.export(newProfile);
+            profileManager.addProfile(newProfile);
+        }
+        else
+        {
+            messenger.profileExists(newProfileName);
+        }
+    }
+
+    private void profileCmd(Command cmd) throws NotEnoughArgumentsException
+    {
+        String lookup=cmd.getArgument(1);
+        Profile lookupProfile=profileManager.findProfile(lookup);
+        if(lookupProfile!=null)
+        {
+            messenger.printProfile(lookupProfile);
+        }
+        else
+        {
+            messenger.profileNotFound(lookup);
+        }
+    }
+    
+    private void fullImportCmd(Command cmd) throws NotEnoughArgumentsException
+    {   
+        String newProfileName=cmd.getArgument(1);
+        String privateKeyBase64=cmd.getArgument(2);
+        if(profileManager.findProfile(newProfileName)==null)
+        {
+            Profile newProfile=new Profile(newProfileName,Rsa.keyPairFromPrivateKeyString(privateKeyBase64));
+            profileExporter.export(newProfile);
+            profileManager.addProfile(newProfile);
+        }
+        else
+        {
+            messenger.profileExists(newProfileName);
+        }
+    }
+
+    private void importCmd(Command cmd) throws NotEnoughArgumentsException
+    {   
+        String newProfileName=cmd.getArgument(1);
+        String publicKeyBase64=cmd.getArgument(2);
+        if(profileManager.findProfile(newProfileName)==null)
+        {
+            Profile newProfile=new Profile(newProfileName,
+                new KeyPair(Rsa.base64ToPublic(publicKeyBase64),null));
+            profileExporter.export(newProfile);
+            profileManager.addProfile(newProfile);
         }
         else
         {

@@ -20,6 +20,7 @@ public interface Messenger
     void exceptionCaught(Exception e);
     void prompt(Profile activeProfile);
     void noPrivateKey(Profile p);
+    void printProfile(Profile p);
     void listProfiles(ProfileManager pm);
     void profileExists(String name);
     void failedToMine();

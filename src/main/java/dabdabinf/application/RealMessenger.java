@@ -70,6 +70,10 @@ public class RealMessenger implements Messenger
     {
         stdout.print(pm.getProfileList());
     }
+    public void printProfile(Profile p)
+    {
+        stdout.print(p.getProfileReport());
+    }
     public void profileExists(String name)
     {
         stdout.printf("Profile \"%s\" already exists!\n",name);

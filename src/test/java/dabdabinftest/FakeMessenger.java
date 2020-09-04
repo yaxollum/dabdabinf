@@ -63,4 +63,5 @@ public class FakeMessenger implements Messenger
     public void notEnoughArguments() {}
     public void listUnprocessed(TransactionManager tm) {}
     public void printDashedLine() {}
+    public void printProfile(Profile p) {}
 }

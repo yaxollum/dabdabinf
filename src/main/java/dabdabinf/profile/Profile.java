@@ -32,4 +32,17 @@ public class Profile
     {
         return keys.getPrivate()!=null;
     }
+    public String getProfileReport()
+    {
+        String publicKeyString=getPublicKeyBase64();
+        String fingerprint=Rsa.getFingerprint(publicKeyString);
+        String report=String.format("Fingerprint: %s\n\nPublic key: %s\n",
+            fingerprint,
+            publicKeyString);
+        if(hasPrivateKey())
+        {
+            report+=String.format("\nPrivate key: %s\n",Rsa.privateToBase64(keys.getPrivate()));
+        }
+        return report;
+    }
 }

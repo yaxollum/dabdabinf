@@ -2,6 +2,7 @@ package dabdabinf.tools;
 
 import java.security.*;
 import java.security.spec.*;
+import java.security.interfaces.*;
 import java.util.Base64;
 import java.io.File;
 
@@ -17,7 +18,7 @@ public class Rsa
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            e.printStackTrace();
             System.exit(1);
             return null;
         }
@@ -37,7 +38,7 @@ public class Rsa
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            e.printStackTrace();
             System.exit(1);
             return null;
         }
@@ -57,7 +58,7 @@ public class Rsa
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            e.printStackTrace();
             System.exit(1);
             return false;
         }
@@ -85,7 +86,7 @@ public class Rsa
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            e.printStackTrace();
             System.exit(1);
             return null;
         }
@@ -109,6 +110,12 @@ public class Rsa
         byte[] publicBytes=k.getEncoded();
         return new String(Base64.getEncoder().encode(publicBytes));
     }
+
+    public static String privateToBase64(PrivateKey k)
+    {
+        byte[] privateBytes=k.getEncoded();
+        return new String(Base64.getEncoder().encode(privateBytes));
+    }
     
     public static PublicKey base64ToPublic(String publicBytesBase64)
     {
@@ -120,7 +127,46 @@ public class Rsa
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            e.printStackTrace();
+            System.exit(1);
+            return null;
+        }
+    }
+
+    public static String getFingerprint(String data) // the fingerprint is the first 20 bytes of the SHA256 hash of the data
+    {
+        byte[] hashBytes=General.sha256(data.getBytes());
+        String fingerprint="";
+        for(int i=0;i<hashBytes.length;++i) 
+        {
+            fingerprint+=String.format("%02X",hashBytes[i]);
+        }
+        return fingerprint;
+    }
+
+    public static KeyPair keyPairFromPrivateKeyString(String privateBytesBase64)
+    {
+        try
+        {
+            KeyFactory kf=KeyFactory.getInstance("RSA");
+            byte[] privateBytes=Base64.getDecoder().decode(privateBytesBase64);
+            PKCS8EncodedKeySpec pkcs=new PKCS8EncodedKeySpec(privateBytes);
+            PrivateKey privateKey = kf.generatePrivate(pkcs);
+            if(privateKey instanceof RSAPrivateCrtKey)
+            {
+                RSAPrivateCrtKey privateCrtKey=(RSAPrivateCrtKey) privateKey;
+                RSAPublicKeySpec publicKeySpec=new RSAPublicKeySpec(privateCrtKey.getModulus(), privateCrtKey.getPublicExponent());   
+                PublicKey publicKey = kf.generatePublic(publicKeySpec);
+                return new KeyPair(publicKey,privateKey);
+            }
+            else
+            {
+                throw new IllegalArgumentException("Need an RSAPrivateCrtKey");
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
             System.exit(1);
             return null;
         }
