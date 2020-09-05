@@ -133,7 +133,7 @@ public class Rsa
         }
     }
 
-    public static String getFingerprint(String data) // the fingerprint is the first 20 bytes of the SHA256 hash of the data
+    public static String getFingerprint(String data) // the fingerprint is the SHA256 hash of the data, in uppercase hexadecimal form
     {
         byte[] hashBytes=General.sha256(data.getBytes());
         String fingerprint="";
