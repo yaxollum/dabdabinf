@@ -29,7 +29,7 @@ mvn package
 
 The packaged JAR file can be found inside the `target` folder. To run it,
 
-```
+```bash
 cd target
 java -jar dabdabinf-VERSION.NUMBER.jar
 ```
