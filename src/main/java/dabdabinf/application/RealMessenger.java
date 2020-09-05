@@ -3,9 +3,12 @@ package dabdabinf.application;
 import java.io.PrintStream;
 import dabdabinf.block.Block;
 import dabdabinf.profile.Profile;
+import dabdabinf.profile.ProfileLoader;
 import dabdabinf.profile.ProfileManager;
 import dabdabinf.transaction.TransactionManager;
 import dabdabinf.transaction.BlockTransactions;
+import dabdabinf.tools.General;
+import dabdabinf.blockchain.BlockchainLoader;
 
 public class RealMessenger implements Messenger
 {
@@ -15,9 +18,16 @@ public class RealMessenger implements Messenger
     {
         stdout=output;
     }
+    public void welcome()
+    {
+        stdout.println("dabdabinf - the future of useless software\nType \"help\" for more information.");
+    }
     public void help()
     {
-        stdout.println("(Help tips here)");
+        stdout.printf("Where everything is stored:\nThe blockchain is stored in the folder %s\nThe profiles are stored in the folder %s\n\nThe prompt:\nSimilar to many Linux shell prompts, the prompt is in the format: ACTIVE_PROFILE@dabdabinf SYMBOL\nwhere ACTIVE_PROFILE is the name of the active profile, and SYMBOL is '$' when the active profile only has a public key, '#' when the active profile also has a private key.\n\nList of all the commands:\n%s\n",
+            BlockchainLoader.getBlockchainStoragePath(),
+            ProfileLoader.getProfileStoragePath(),
+            General.readEntireResource("/command_list"));
     }
     public void exit()
     {

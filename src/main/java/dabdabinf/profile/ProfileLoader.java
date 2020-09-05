@@ -1,6 +1,7 @@
 package dabdabinf.profile;
 
 import java.io.File;
+import java.io.IOException;
 import java.security.KeyPair;
 import java.util.List;
 import java.util.ArrayList;
@@ -8,6 +9,20 @@ import dabdabinf.tools.*;
 
 public class ProfileLoader
 {
+    public static String getProfileStoragePath()
+    {
+        try
+        {
+            String userHomeDir=System.getProperty("user.home"); 
+            File profileBigFolder = new File(userHomeDir+"/.dabdabinf/profiles");
+            return profileBigFolder.getCanonicalPath();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+            return "";
+        }
+    }
     public static List<Profile> load()
     {
         List<Profile> profiles=new ArrayList<Profile>();

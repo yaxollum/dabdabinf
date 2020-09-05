@@ -13,13 +13,6 @@ public class Profile
         name=n;
         keys=k;
     }
-    /*
-    public Profile(Profile other)
-    {
-        name=other.name;
-        keys=other.keys;
-    }
-    */
     public String sign(String message)
     {
         return Rsa.sign(message,keys.getPrivate());

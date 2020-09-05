@@ -1,6 +1,7 @@
 package dabdabinf.blockchain;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
@@ -9,6 +10,20 @@ import dabdabinf.tools.General;
 
 public class BlockchainLoader
 {
+    public static String getBlockchainStoragePath()
+    {
+        try
+        {
+            String userHomeDir=System.getProperty("user.home");
+            File blockchainFolder=new File(userHomeDir+"/.dabdabinf/blockchain");
+            return blockchainFolder.getCanonicalPath();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+            return "";
+        }
+    }
     public static List<Block> load()
 	{
         String userHomeDir=System.getProperty("user.home");

@@ -15,31 +15,9 @@ import dabdabinf.miner.Miner;
 
 public class Main
 {
-	///static String welcomeMessage, helpMessage;
-	static Scanner input;
-	/*
-	private static void initializeMessages()
-	{
-		welcomeMessage=General.readEntireFile(new File("messages/welcomeMessage"));
-		helpMessage=General.readEntireFile(new File("messages/helpMessage"));
-	}
-	
-	private static Profile chooseProfile(ProfileManager pm)
-	{
-	    System.out.println("Existing profiles\n----------");
-		pm.listProfiles();
-		
-		System.out.print("Please choose a profile, or create a new one by specifying a new name: ");
-	    String name=input.next();
-	    
-	    return pm.findProfile(name,true);
-	}
-	*/
 	public static void main(String[] args) throws BlockInvalidException,SplitBlockDataException,BlockMinerNotAddedException
 	{
-		//initializeMessages();
-		//System.out.println(welcomeMessage);
-		input=new Scanner(System.in);
+		Scanner input=new Scanner(System.in);
 		Blockchain blockchain=new RealBlockchain(BlockchainLoader.load());
         BlockchainValidator.validate(blockchain);
 
@@ -62,6 +40,7 @@ public class Main
 		    messenger,
             miner);
 		
+		messenger.welcome();
 		while(true)
 		{
             messenger.prompt(activeProfile.get());

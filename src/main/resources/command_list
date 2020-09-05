@@ -1,0 +1,13 @@
+help                            - displays this message
+exit                            - exits dabdabinf
+blocks                          - displays all of the blocks in the blockchain
+block BLOCK_NUMBER              - displays the block with index BLOCK_NUMBER
+mine                            - mines a new block
+send PROFILE AMOUNT             - sends AMOUNT dabdabinf to PROFILE
+balance PROFILE                 - displays transactions involving PROFILE
+switch PROFILE                  - changes the active profile to PROFILE
+profiles                        - lists all profiles
+generate PROFILE                - generates a profile with name PROFILE
+unprocessed                     - lists all unprocessed transactions
+full-import PROFILE PRIVATE_KEY - imports PRIVATE_KEY to create a new profile named PROFILE
+import PROFILE PUBLIC_KEY       - imports PUBLIC_KEY to create a new profile named PROFILE

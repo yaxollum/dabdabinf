@@ -18,6 +18,7 @@ public class FakeMessenger implements Messenger
     int profileCreatedCalled=0; 
     int profileNotFoundCalled=0;
 
+    public void welcome() {}
     public void help()
     {
         ++helpCalled;

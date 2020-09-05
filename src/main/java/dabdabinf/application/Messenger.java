@@ -8,6 +8,7 @@ import dabdabinf.transaction.BlockTransactions;
 
 public interface Messenger
 {
+    void welcome();
     void help();
     void exit();
     void printBlock(Block block,BlockTransactions bt);
